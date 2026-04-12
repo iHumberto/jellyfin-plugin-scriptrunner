@@ -1,3 +1,7 @@
+![Project Stage][project-stage-shield]
+![Maintenance][maintenance-shield]
+
+
 # Jellyfin Script Runner Plugin
 
 Plugin para o [Jellyfin](https://jellyfin.org) que executa um script customizado automaticamente sempre que um item for adicionado ou atualizado na biblioteca.
@@ -117,3 +121,6 @@ O debounce evita múltiplas execuções durante scans grandes — se vários ite
 ## Licença
 
 MIT
+
+[maintenance-shield]: https://img.shields.io/maintenance/yes/2026.svg
+[project-stage-shield]: https://img.shields.io/badge/project%20stage-production%20ready-brightgreen.svg
