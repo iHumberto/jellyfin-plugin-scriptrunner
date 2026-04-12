@@ -1,1 +1,119 @@
-IyBKZWxseWZpbiBTY3JpcHQgUnVubmVyIFBsdWdpbgoKUGx1Z2luIHBhcmEgbyBbSmVsbHlmaW5dKGh0dHBzOi8vamVsbHlmaW4ub3JnKSBxdWUgZXhlY3V0YSB1bSBzY3JpcHQgY3VzdG9taXphZG8gYXV0b21hdGljYW1lbnRlIHNlbXByZSBxdWUgdW0gaXRlbSBmb3IgYWRpY2lvbmFkbyBvdSBhdHVhbGl6YWRvIG5hIGJpYmxpb3RlY2EuCgpJZGVhbCBwYXJhIG1hbnRlciBzbGlkZXNob3dzLCBsaXN0YXMgb3UgcXVhbHF1ZXIgYXJxdWl2byBleHRlcm5vIHNlbXByZSBzaW5jcm9uaXphZG8gY29tIGFzIG3DrWRpYXMgZG8gc2Vydmlkb3IuCgotLS0KCiMjIEluc3RhbGHDp8OjbyB2aWEgUmVwb3NpdMOzcmlvIChSZWNvbWVuZGFkbykKCjEuIEFjZXNzZSBvIHBhaW5lbCBkbyBKZWxseWZpbgoyLiBWw6Egem8gKipEYXNoYm9hcmQg4oiSIFBsdWdpbnMg4oiSIFJlcG9zaXTDs3Jpb3MqKgozLiBDbGlxdWUgZW0gKiorKiogZSBhZGljaW9uZSBhIFVSTDoKCiAgIGBgYAogICBodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vaUh1bWJlcnRvL2plbGx5ZmluLXBsdWdpbi1zY3JpcHRydW5uZXIvbWFpbi9tYW5pZmVzdC5qc29uCiAgIGBgYAoKNC4gVsOiIHBhcmEgKipDYXTDoWxvZ28qKiBlIGluc3RhbGUgbyAqKlNjcmlwdCBSdW5uZXIqKgo1LiBSZWluaWNpZSBvIEplbGx5ZmluCjYuIENyaWUgbyBhcnF1aXZvIGBjb25maWcuanNvbmAgKHZlamEgYWJhaXhvKQoKLS0tCgojIyBJbnN0YWxhw6fDo28gTWFudWFsCgoxLiBCYWl4ZSBhIERMTCBtYWlzIHJlY2VudGUgbmEgYWJhIFtSZWxlYXNlc10oaHR0cHM6Ly9naXRodWIuY29tL2lIdW1iZXJ0by9qZWxseWZpbi1wbHVnaW4tc2NyaXB0cnVubmVyL3JlbGVhc2VzKQoyLiBDcmllIGEgcGFzdGEgYC9jb25maWcvcGx1Z2lucy9TY3JpcHRSdW5uZXIvYAozLiBDb3BpZSBhIERMTCBwYXJhIGVzc2EgcGFzdGEKNC4gQ3JpZSBvIGFycXVpdm8gYGNvbmZpZy5qc29uYCAodmVqYSBhYmFpeG8pCjUuIFJlaW5pY2llIG8gSmVsbHlmaW4KCi0tLQoKIyMgQ29uZmlndXJhw6fDo28KCkNyaWUgbyBhcnF1aXZvIGBjb25maWcuanNvbmAgZGVudHJvIGRhIHBhc3RhIGRvIHBsdWdpbjoKCmBgYApjb25maWcvcGx1Z2lucy9TY3JpcHRSdW5uZXIvY29uZmlnLmpzb24KYGBgCgpgYGBqc29uCnsKICAiU2NyaXB0UGF0aCI6ICIvY2FtaW5oby9kb19zY3JpcHQuc2giLAogICJTY3JpcHRBcmd1bWVudHMiOiAiIiwKICAiRGVib3VuY2VTZWNvbmRzIjogMzAsCiAgIlRyaWdnZXJPbkl0ZW1BZGRlZCI6IHRydWUsCiAgIlRyaWdnZXJPbkl0ZW1VcGRhdGVkIjogZmFsc2UKfQpgYGAKCnwgQ2FtcG8gfCBUaXBvIHwgRGVzY3Jpw6fDo28gfAp8LS0tLS18LS0tLS18LS0tLS18CnwgYFNjcmlwdFBhdGhgIHwgc3RyaW5nIHwgQ2FtaW5obyBhYnNvbHV0byBkbyBzY3JpcHQgYSBleGVjdXRhciB8CnwgYFNjcmlwdEFyZ3VtZW50c2AgfCBzdHJpbmcgfCBBcmd1bWVudG9zIG9wY2lvbmFpcyBwYXNzYWRvcyBhbyBzY3JpcHQgfAp8IGBEZWJVT3VuY2VTZWNvbmRzYCB8IGludCB8IFRlbXBvIGVtIHNlZ3VuZG9zIGFww7NzIG8gw7psdGltbyBldmVudG8gYW50ZXMgZGUgZXhlY3V0YXIgfAp8IGBUcmlnZ2VyT25JdGVtQWRkZWRgIHwgYm9vbCB8IERpc3BhcmEgcXVhbmRvIHVtIGl0ZW0gw6kgYWRpY2lvbmFkbyB8CnwgYFRyaWdnZXJPbkl0ZW1VcGRhdGVkYCB8IGJvb2wgfCBEaXNwYXJhIHF1YW5kbyB1bSBpdGVtIMOpIGF0dWFsaXphZG8gfAoKPiAqKk5vdGE6KiogQWx0ZXJhw6fDtWVzIG5vIGBjb25maWcuanNvbmAgcGFzc2FtIGEgdmFsZXIgYXDDs3MgcmVpbmljaWFyIG8gSmVsbHlmaW4uCgotLS0KCiMjIFVzbyBjb20gRG9ja2VyCgpFeGVtcGxvIGRlIGBkb2NrZXItY29tcG9zZS55YW1sYDoKCmBgYHlhbWwKc2VydmljZXM6CiAgamVsbHlmaW46CiAgICBpbWFnZTogamVsbHlmaW4vamVsbHlmaW4KICAgIHZvbHVtZXM6CiAgICAgIC0gLi9kYXRhOi9jb25maWcKICAgICAgLSAuL3BsdWdpbnM6L2NvbmZpZy9wbHVnaW5zICAgICAgICAjIHBhc3RhIGRlIHBsdWdpbnMKICAgICAgLSAuL21ldS1zY3JpcHQuc2g6L2plbGx5ZmluL21ldS1zY3JpcHQuc2ggICMgc2NyaXB0IG1vbnRhZG8gbm8gY29udGFpbmVyCmBgYAoKT24gaG9zdCwgY3JpZSBvcyBhcnF1aXZvczoKCmBgYGJhc2gKbWtkaXIgLXAgLi9wbHVnaW5zL1NjcmlwdFJ1bm5lcgoKY2F0ID4gLi9wbHVnaW5zL1NjcmlwdFJ1bm5lci9jb25maWcuanNvbiA8PCBFT0YKewogICJTY3JpcHRQYXRoIjogIi9qZWxseWZpbi9tZXUtc2NyaXB0LnNoIiwKICAiU2NyaXB0QXJndW1lbnRzIjogIiIsCiAgIkRlYm91bmNlU2Vjb25kcyI6IDMwLAogICJUcmlnZ2VyT25JdGVtQWRkZWQiOiB0cnVlLAogICJUcmlnZ2VyT25JdGVtVXBkYXRlZCI6IGZhbHNlCn0KRU9GCmBgYAoKLS0tCgojIyBDb21vIGZ1bmNpb25hCgpgYGAKSmVsbHlmaW4gZGV0ZWN0YSBub3ZvIGl0ZW0gKEZpbG1lIG91IFPDqXJpZSkKICAgICAgICDihpMKUGx1Z2luIGFndWFyZGEgbyBkZWJvdW5jZSAoZGVmYXVsdDogMzBzKQogICAgICAgIOKGkwpFeGVjdXRhIG8gc2NyaXB0IGNvbmZpZ3VyYWRvCiAgICAgICAg4oaTClNjcmlwdCBmYXogbyBxdWUgdm9jw6ogcXVpc2VyCmBgYAoKTyBkZWJvdW5jZSBldml0YSBtw7psdGlwbGFzIGV4ZWN1w6fDtWVzIGR1cmFudGUgc2NhbnMgZ3JhbmRlcyAtIHNlIHbDoXJpb3MgaXRlbnMgZm9yZW0gYWRpY2lvbmFkb3MgZW0gc2VxdcOqbmNpYSwgbyBzY3JpcHQgcm9kYXLDoSBhcGVuYXMgdW1hIHZlei4KCi0tLQoKIyMgQ29tcGF0aWJpbGlkYWRlCgp8IEplbGx5ZmluIHwgU3RhdHVzIHwKfC0tLS18LS0tLXwKfCAxMC4xMC54IHwg4pyTIFN1cG9ydGFkbyB8CnwgMTAuOS54IHwgTsOjbyB0ZXN0YWRvIHwKCi0tLQoKIyMgTGljZW7Dp2EKCk1JVA==
+# Jellyfin Script Runner Plugin
+
+Plugin para o [Jellyfin](https://jellyfin.org) que executa um script customizado automaticamente sempre que um item for adicionado ou atualizado na biblioteca.
+
+Ideal para manter slideshows, listas ou qualquer arquivo externo sempre sincronizado com as mídias do servidor.
+
+---
+
+## Instalação via Repositório (Recomendado)
+
+1. Acesse o painel do Jellyfin
+2. Vá em **Dashboard → Plugins → Repositórios**
+3. Clique em **+** e adicione a URL: ```https://raw.githubusercontent.com/iHumberto/jellyfin-plugin-scriptrunner/main/manifest.json```
+4. Vá para **Catálogo** e instale o **Script Runner**
+5. Reinicie o Jellyfin
+6. Crie o arquivo `config.json` (veja abaixo)
+
+---
+
+## Instalação Manual
+
+1. Baixe a DLL mais recente na aba [Releases](https://github.com/iHumberto/jellyfin-plugin-scriptrunner/releases)
+2. Crie a pasta `/config/plugins/ScriptRunner/`
+3. Copie a DLL para essa pasta
+4. Crie o arquivo `config.json` (veja abaixo)
+5. Reinicie o Jellyfin
+
+---
+
+## Configuração
+
+Crie o arquivo `config.json` dentro da pasta do plugin: ```config/plugins/ScriptRunner/config.json```
+
+
+```json
+{
+  "ScriptPath": "/caminho/do_script.sh",
+  "ScriptArguments": "",
+  "DebounceSeconds": 30,
+  "TriggerOnItemAdded": true,
+  "TriggerOnItemUpdated": false
+}
+```
+
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `ScriptPath` | string | Caminho absoluto do script a executar |
+| `ScriptArguments` | string | Argumentos opcionais passados ao script |
+| `DebounceSeconds` | int | Tempo em segundos após o último evento antes de executar |
+| `TriggerOnItemAdded` | bool | Dispara quando um item é adicionado |
+| `TriggerOnItemUpdated` | bool | Dispara quando um item é atualizado |
+
+> **Nota:** Alterações no `config.json` passam a valer após reiniciar o Jellyfin.
+
+---
+
+## Uso com Docker
+
+Exemplo de `docker-compose.yaml`:
+
+```yaml
+services:
+  jellyfin:
+    image: jellyfin/jellyfin
+    volumes:
+      - ./data:/config
+      - ./plugins:/config/plugins
+      - ./meu-script.sh:/jellyfin/meu-script.sh
+```
+
+No host, crie os arquivos:
+
+```bash
+mkdir -p ./plugins/ScriptRunner
+
+cat > ./plugins/ScriptRunner/config.json << EOF
+{
+  "ScriptPath": "/jellyfin/meu-script.sh",
+  "ScriptArguments": "",
+  "DebounceSeconds": 30,
+  "TriggerOnItemAdded": true,
+  "TriggerOnItemUpdated": false
+}
+EOF
+```
+
+Certifique-se que o script tem permissão de execução:
+
+```bash
+chmod +x ./meu-script.sh
+```
+
+---
+
+## Como funciona
+Jellyfin detecta novo item (Filme ou Série)
+↓
+Plugin aguarda o debounce (default: 30s)
+↓
+Executa o script configurado
+↓
+Script faz o que você quiser
+
+O debounce evita múltiplas execuções durante scans grandes — se vários itens forem adicionados em sequência, o script rodará apenas uma vez.
+
+---
+
+## Compatibilidade
+
+| Jellyfin | Status |
+|----------|--------|
+| 10.10.x  | ✅ Suportado |
+| 10.9.x   | Não testado |
+
+---
+
+## Licença
+
+MIT
