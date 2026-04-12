@@ -1,0 +1,20 @@
+[
+  {
+    "category": "General",
+    "guid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "Script Runner",
+    "description": "Executa scripts customizados quando a biblioteca é atualizada.",
+    "owner": "iHumberto",
+    "overview": "Dispara um script bash ao detectar novos itens na biblioteca do Jellyfin.",
+    "versions": [
+      {
+        "version": "1.0.0.0",
+        "changelog": "Versão inicial.",
+        "targetAbi": "10.10.0.0",
+        "sourceUrl": "https://github.com/iHumberto/jellyfin-plugin-scriptrunner/releases/download/v1.0.0/Jellyfin.Plugin.ScriptRunner.dll",
+        "checksum": "593f9de9add0cc2c175d45f2982279b8",
+        "timestamp": "2026-04-12T00:00:00Z"
+      }
+    ]
+  }
+]

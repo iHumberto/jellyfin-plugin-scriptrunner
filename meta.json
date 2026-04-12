@@ -1,0 +1,12 @@
+{
+  "category": "General",
+  "guid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "name": "Script Runner",
+  "description": "Executa scripts personalizados quando a biblioteca é atualizada.",
+  "overview": "Dispara um script shell sempre que um filme ou série é adicionado/atualizado na biblioteca.",
+  "owner": "iHumberto",
+  "version": "1.0.0.0",
+  "targetAbi": "10.10.0.0",
+  "framework": "net8.0",
+  "imageUrl": ""
+}
