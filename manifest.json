@@ -13,7 +13,8 @@
         "targetAbi": "10.10.0.0",
         "sourceUrl": "https://github.com/iHumberto/jellyfin-plugin-scriptrunner/releases/download/v1.0.0/Jellyfin.Plugin.ScriptRunner.dll",
         "checksum": "593f9de9add0cc2c175d45f2982279b8",
-        "timestamp": "2026-04-12T00:00:00Z"
+        "timestamp": "2026-04-12T00:00:00Z",
+        "imageUrl": "https://raw.githubusercontent.com/iHumberto/jellyfin-plugin-scriptrunner/main/logo.png"
       }
     ]
   }
