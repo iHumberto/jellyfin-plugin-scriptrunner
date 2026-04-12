@@ -14,7 +14,8 @@ Ideal para manter slideshows, listas ou qualquer arquivo externo sempre sincroni
 
 1. Acesse o painel do Jellyfin
 2. Vá em **Dashboard → Plugins → Repositórios**
-3. Clique em **+** e adicione a URL: ```https://raw.githubusercontent.com/iHumberto/jellyfin-plugin-scriptrunner/main/manifest.json```
+3. Clique em **+** e adicione a URL: 
+```https://raw.githubusercontent.com/iHumberto/jellyfin-plugin-scriptrunner/main/manifest.json```
 4. Vá para **Catálogo** e instale o **Script Runner**
 5. Reinicie o Jellyfin
 6. Crie o arquivo `config.json` (veja abaixo)
