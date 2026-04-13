@@ -1,1 +1,135 @@
-bmFtZTogQnVpbGQgJiBSZWxlYXNlIFBsdWdpbgoKb246CiAgcHVzaDoKICAgIHRhZ3M6CiAgICAgIC0gJ3YqJwoKam9iczoKICBidWlsZDoKICAgIHJ1bnMtb246IHVidW50dS1sYXRlc3QKCiAgICBzdGVwczoKICAgICAgLSB1c2VzOiBhY3Rpb25zL2NoZWNrb3V0QHY0CiAgICAgICAgd2l0aDoKICAgICAgICAgIHRva2VuOiAke3sgc2VjcmV0cy5HSVRIVUJfVE9LRU4gfX0KCiAgICAgIC0gbmFtZTogU2V0dXAgLk5FVAogICAgICAgIHVzZXM6IGFjdGlvbnMvc2V0dXAtZG90bmV0QHY0CiAgICAgICAgd2l0aDoKICAgICAgICAgIGRvdG5ldC12ZXJzaW9uOiAnOC4wLngnCgogICAgICAtIG5hbWU6IEJ1aWxkCiAgICAgICAgcnVuOiBkb3RuZXQgYnVpbGQgLWMgUmVsZWFzZSBKZWxseWZpbi5QbHVnaW4uU2NyaXB0UnVubmVyL2plbGx5ZmluLXNjcmlwdC1ydW5uZXIuY3Nwcm9qCgogICAgICAtIG5hbWU6IENhbGN1bGFyIE1ENQogICAgICAgIGlkOiBtZDUKICAgICAgICBydW46IHwKICAgICAgICAgIE1ENV0kKG1kNXN1bSBKZWxseWZpbi5QbHVnaW4uU2NyaXB0UnVubmVyL2Jpbi9SZWxlYXNlL25ldDguMC9KZWxseWZpbi5QbHVnaW4uU2NyaXB0UnVubmVyLmRsbCB8IGN1dCAtZCcgJyAtZjEpCiAgICAgICAgICBlY2hvICJjaGVja3N1bT0kTUQ1IiA+PiAkR0lUSFVCX09VVFBVVAoKICAgICAgLSBuYW1lOiBBdHVhbGl6YXIgbWFuaWZlc3QuanNvbgogICAgICAgIHJ1bjogfAogICAgICAgICAgVkVSU0lPTj0iJHtHSVRIVUJfUkVGX05BTUUjdn0iCiAgICAgICAgICBUSU1FU1RBTVA9JChkYXRlIC11ICsiJVktJW0tJWRUJUg6JU06JVNaIikKICAgICAgICAgIFNPVVJDRV9VUkw9Imh0dHBzOi8vZ2l0aHViLmNvbS8ke3sgZ2l0aHViLnJlcG9zaXRvcnkgfX0vcmVsZWFzZXMvZG93bmxvYWQvJHtHSVRIVUJfUkVGX05BTUV9L0plbGx5ZmluLlBsdWdpbi5TY3JpcHRSdW5uZXIuZGxsIgoKICAgICAgICAgIGpxIC0tYXJnIHZlcnNpb24gIiRWRVJTSU9OLjAiIFwKICAgICAgICAgICAgIC0tYXJnIGNoZWNrc3VtICIke3sgc3RlcHMubWQ1Lm91dHB1dHMuY2hlY2tzdW0gfX0iIFwKICAgICAgICAgICAgIC0tYXJnIHNvdXJjZVVybCAiJFNPVVJDRV9VUkwiIFwKICAgICAgICAgICAgIC0tYXJnIHRpbWVzdGFtcCAiJFRJTUVTVEFNUCIgXAogICAgICAgICAgICAgJ1swXS52ZXJzaW9ucyA9IFt7CiAgICAgICAgICAgICAgICJ2ZXJzaW9uIjogJHZlcnNpb24sCiAgICAgICAgICAgICAgICJjaGFuZ2Vsb2ciOiAiVmVqYSBvIHJlbGVhc2Ugbm8gR2l0SHViLiIsCiAgICAgICAgICAgICAgICJ0YXJnZXRBYmkiOiAiMTAuMTAuMC4wIiwKICAgICAgICAgICAgICAgInNvdXJjZVVybCI6ICRzb3VyY2VVcmwsCiAgICAgICAgICAgICAgICJjaGVja3N1bSI6ICRjaGVja3N1bSwKICAgICAgICAgICAgICAgInRpbWVzdGFtcCI6ICR0aW1lc3RhbXAKICAgICAgICAgICAgIH1dJyBtYW5pZmVzdC5qc29uID4gbWFuaWZlc3QudG1wICYmIG12IG1hbmlmZXN0LnRtcCBtYW5pZmVzdC5qc29uCgogICAgICAtIG5hbWU6IENvbW1pdCBtYW5pZmVzdC5qc29uIGF0dWFsaXphZG8KICAgICAgICBydW46IHwKICAgICAgICAgIGdpdCBjb25maWcgdXNlci5uYW1lICJnaXRodWItYWN0aW9uc1tib3RdIgogICAgICAgICAgZ2l0IGNvbmZpZyB1c2VyLmVtYWlsICJnaXRodWItYWN0aW9uc1tib3RdQHVzZXJzLm5vcmVwbHkuZ2l0aHViLmNvbSIKICAgICAgICAgIGdpdCBhZGQgbWFuaWZlc3QuanNvbgogICAgICAgICAgZ2l0IGNvbW1pdCAtbSAiY2hvcmU6IGF0dWFsaXphIG1hbmlmZXN0Lmpzb24gcGFyYSAke0dJVEhVQl9SRUZfTkFNRX0iCiAgICAgICAgICBnaXQgcHVzaCBvcmlnaW4gSEVBRDptYWluCgogICAgICAtIG5hbWU6IENyaWFyIFJlbGVhc2UKICAgICAgICB1c2VzOiBzb2Z0cHJvcHMvYWN0aW9uLWdoLXJlbGVhc2VAdjIKICAgICAgICB3aXRoOgogICAgICAgICAgZmlsZXM6IEplbGx5ZmluLlBsdWdpbi5TY3JpcHRSdW5uZXIvYmluL1JlbGVhc2UvbmV0OC4wL0plbGx5ZmluLlBsdWdpbi5TY3JpcHRSdW5uZXIuZGxsCiAgICAgICAgICBib2R5OiB8CiAgICAgICAgICAgICMjIEluc3RhbGHDp8OjbyB2aWEgUmVwb3NpdMOzcmlvIChSZWNvbWVuZGFkbykKCiAgICAgICAgICAgIDEuIEFjZXNzZSBvIHBhaW5lbCBkbyBKZWxseWZpbgogICAgICAgICAgICAyLiBWw6Egem8gKipEYXNoYm9hcmQg4oiSIFBsdWdpbnMg4oiSIFJlcG9zaXTDs3Jpb3MqKgogICAgICAgICAgICAzLiBDbGlxdWUgZW0gKiorKiogZSBhZGljaW9uZSBhIFVSTDoKICAgICAgICAgICAgYGBgCiAgICAgICAgICAgIGh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9pSHVtYmVydG8vamVsbHlmaW4tcGx1Z2luLXNjcmlwdHJ1bm5lci9tYWluL21hbmlmZXN0Lmpzb24KICAgICAgICAgICAgYGBgCiAgICAgICAgICAgIDQuIFbDoSBwYXJhICoqQ2F0w6Fsb2dvKiogZSBpbnN0YWxlIG8gKipTY3JpcHQgUnVubmVyKioKICAgICAgICAgICAgNS4gUmVpbmljaWUgbyBKZWxseWZpbgogICAgICAgICAgICA2LiBDcmllIG8gYXJxdWl2byBgY29uZmlnLmpzb25gICh2ZWphIGFiYWl4bykKCiAgICAgICAgICAgIC0tLQoKICAgICAgICAgICAgIyMgQ29uZmlndXJhw6fDo28KCiAgICAgICAgICAgIENyaWUgbyBhcnF1aXZvIGBjb25maWcuanNvbmAgZGVudHJvIGRhIHBhc3RhIGRvIHBsdWdpbjoKCiAgICAgICAgICAgIGBgYGpzb24KICAgICAgICAgICAgewogICAgICAgICAgICAgICJTY3JpcHRQYXRoIjogIi9jYW1pbmhvL2RvX3NjcmlwdC5zaCIsCiAgICAgICAgICAgICAgIlNjcmlwdEFyZ3VtZW50cyI6ICIiLAogICAgICAgICAgICAgICJEZWJvdW5jZVNlY29uZHMiOiAzMCwKICAgICAgICAgICAgICAiVHJpZ2dlck9uSXRlbUFkZGVkIjogdHJ1ZSwKICAgICAgICAgICAgICAiVHJpZ2dlck9uSXRlbVVwZGF0ZWQiOiBmYWxzZQogICAgICAgICAgICB9CiAgICAgICAgICAgIGBgYAoKICAgICAgICAgICAgLS0tCgogICAgICAgICAgICAjIyBFeGVtcGxvIGRlIFNjcmlwdAoKICAgICAgICAgICAgIyMjIE5vIEhvc3QgKGluc3RhbGHDp8OjbyBkaXJldGEpCgogICAgICAgICAgICBDcmllIG8gc2NyaXB0IGVtIGAvb3B0L3NjcmlwdHMvdXBkYXRlLnNoYDoKCiAgICAgICAgICAgIGBgYGJhc2gKICAgICAgICAgICAgIyEvYmluL2Jhc2gKICAgICAgICAgICAgIyBFeGVtcGxvOiBhdHVhbGl6YSB1bSBzbGlkZXNob3cgY29tIGFzIG1pZGlhcyBkbyBKZWxseWZpbgoKICAgICAgICAgICAgSkVMTFlGSU5fVVJMPSJodHRwOi8vbG9jYWxob3N0OjgwOTYiCiAgICAgICAgICAgIEFQSV9LRVk9InN1YV9hcGlfa2V5X2FxdWkiCiAgICAgICAgICAgIE9VVFBVVF9GSUxFPSIvb3B0L3NsaWRlc2hvdy9saXN0YS50eHQiCgogICAgICAgICAgICAjIEJ1c2NhIG9zIGZpbG1lcyBlIHNhbHZhIG9zIHBvc3RlcnMgZW0gdW0gYXJxdWl2bwogICAgICAgICAgICBjdXJsIC1zICIkSkVMTFlGSU5fVVJML0l0ZW1zP0luY2x1ZGVJdGVtVHlwZXM9TW92aWUmQXBpS2V5PSRBUElfS0VZIiBcCiAgICAgICAgICAgICAgfCBqcSAtciAnLkl0ZW1zW10uTmFtZScgPiAiJE9VVFBVVF9GSUxFIgoKICAgICAgICAgICAgZWNobyAiW1NjcmlwdCBSdW5uZXJdIExpc3RhIGF0dWFsaXphZGEgZW0gJChkYXRlKSIKICAgICAgICAgICAgYGBgCgogICAgICAgICAgICBEZWl4ZSBleGVjdXTDoXZlbDoKICAgICAgICAgICAgYGBgYmFzaAogICAgICAgICAgICBjaG1vZCAreCAvb3B0L3NjcmlwdHMvdXBkYXRlLnNoCiAgICAgICAgICAgIGBgYAoKICAgICAgICAgICAgLS0tCgogICAgICAgICAgICAjIyMgQ29tIERvY2tlcgoKICAgICAgICAgICAgTW9udGUgbyBzY3JpcHQgZGVudHJvIGRvIGNvbnRhaW5lciBubyBgZG9ja2VyLWNvbXBvc2UueWFtbGA6CgogICAgICAgICAgICBgYGB5YW1sCiAgICAgICAgICAgIHNlcnZpY2VzOgogICAgICAgICAgICAgIGplbGx5ZmluOgogICAgICAgICAgICAgICAgaW1hZ2U6IGplbGx5ZmluL2plbGx5ZmluCiAgICAgICAgICAgICAgICB2b2x1bWVzOgogICAgICAgICAgICAgICAgICAtIC4vZGF0YTovY29uZmlnCiAgICAgICAgICAgICAgICAgIC0gLi9wbHVnaW5zOi9jb25maWcvcGx1Z2lucwogICAgICAgICAgICAgICAgICAtIC4vdXBkYXRlLnNoOi9zY3JpcHRzL3VwZGF0ZS5zaAogICAgICAgICAgICBgYGAKCiAgICAgICAgICAgIENyaWUgbyBzY3JpcHQgYC4vdXBkYXRlLnNoYCBubyBob3N0OgogICAgICAgICAgICBgYGBiYXNoCiAgICAgICAgICAgICMhL2Jpbi9iYXNoCiAgICAgICAgICAgIGVjaG8gIltTY3JpcHQgUnVubmVyXSBCaWJsaW90ZWNhIGF0dWFsaXphZGEgZW0gJChkYXRlKSIKICAgICAgICAgICAgIyBhZGljaW9uZSBhcXVpIHN1YSBsw7NnaWNhCiAgICAgICAgICAgIGBgYAoKICAgICAgICAgICAgQ29uZmlndXJlIG8gcGx1Z2luIHBhcmEgdXNhciBvIGNhbWluaG8gZGVudHJvIGRvIGNvbnRhaW5lcjoKICAgICAgICAgICAgYGBganNvbgogICAgICAgICAgICB7CiAgICAgICAgICAgICAgIlNjcmlwdFBhdGgiOiAiL3NjcmlwdHMvdXBkYXRlLnNoIiwKICAgICAgICAgICAgICAiRGVib3VuY2VTZWNvbmRzIjogMzAsCiAgICAgICAgICAgICAgIlRyaWdnZXJPbkl0ZW1BZGRlZCI6IHRydWUsCiAgICAgICAgICAgICAgIlRyaWdnZXJPbkl0ZW1VcGRhdGVkIjogZmFsc2UKICAgICAgICAgICAgfQogICAgICAgICAgICBgYGAKCiAgICAgICAgICAgIC0tLQoKICAgICAgICAgICAgPiBWZWphIG8gW1JFQURNRV0oaHR0cHM6Ly9naXRodWIuY29tL2lIdW1iZXJ0by9qZWxseWZpbi1wbHVnaW4tc2NyaXB0cnVubmVyI3JlYWRtZSkgcGFyYSBkb2N1bWVudGHDp8OjbyBjb21wbGV0YS4K
+name: Build & Release Plugin
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build
+        run: dotnet build -c Release Jellyfin.Plugin.ScriptRunner/jellyfin-script-runner.csproj
+
+      - name: Calcular MD5
+        id: md5
+        run: |
+          MD5=$(md5sum Jellyfin.Plugin.ScriptRunner/bin/Release/net8.0/Jellyfin.Plugin.ScriptRunner.dll | cut -d' ' -f1)
+          echo "checksum=$MD5" >> $GITHUB_OUTPUT
+
+      - name: Atualizar manifest.json
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          SOURCE_URL="https://github.com/${{ github.repository }}/releases/download/${GITHUB_REF_NAME}/Jellyfin.Plugin.ScriptRunner.dll"
+
+          jq --arg version "$VERSION.0" \
+             --arg checksum "${{ steps.md5.outputs.checksum }}" \
+             --arg sourceUrl "$SOURCE_URL" \
+             --arg timestamp "$TIMESTAMP" \
+             '.[0].versions = [{
+               "version": $version,
+               "changelog": "Veja o release no GitHub.",
+               "targetAbi": "10.10.0.0",
+               "sourceUrl": $sourceUrl,
+               "checksum": $checksum,
+               "timestamp": $timestamp
+             }]' manifest.json > manifest.tmp && mv manifest.tmp manifest.json
+
+      - name: Commit manifest.json atualizado
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add manifest.json
+          git commit -m "chore: atualiza manifest.json para ${GITHUB_REF_NAME}"
+          git push origin HEAD:main
+
+      - name: Criar Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: Jellyfin.Plugin.ScriptRunner/bin/Release/net8.0/Jellyfin.Plugin.ScriptRunner.dll
+          body: |
+            ## Instalação via Repositório (Recomendado)
+
+            1. Acesse o painel do Jellyfin
+            2. Vá em **Dashboard → Plugins → Repositórios**
+            3. Clique em **+** e adicione a URL:
+            ```
+            https://raw.githubusercontent.com/iHumberto/jellyfin-plugin-scriptrunner/main/manifest.json
+            ```
+            4. Vá para **Catálogo** e instale o **Script Runner**
+            5. Reinicie o Jellyfin
+            6. Crie o arquivo `config.json` (veja abaixo)
+
+            ---
+
+            ## Configuração
+
+            Crie `config/plugins/ScriptRunner/config.json`:
+
+            ```json
+            {
+              "ScriptPath": "/caminho/do_script.sh",
+              "ScriptArguments": "",
+              "DebounceSeconds": 30,
+              "TriggerOnItemAdded": true,
+              "TriggerOnItemUpdated": false
+            }
+            ```
+
+            ---
+
+            ## Exemplo de Script
+
+            ### No Host
+
+            ```bash
+            #!/bin/bash
+            echo "[Script Runner] Biblioteca atualizada em $(date)"
+            # adicione sua lógica aqui
+            ```
+
+            Deixe executável:
+            ```bash
+            chmod +x /caminho/do_script.sh
+            ```
+
+            ### Com Docker
+
+            No `docker-compose.yaml`, monte o script:
+
+            ```yaml
+            services:
+              jellyfin:
+                image: jellyfin/jellyfin
+                volumes:
+                  - ./data:/config
+                  - ./plugins:/config/plugins
+                  - ./update.sh:/scripts/update.sh
+            ```
+
+            No `config.json`, use o caminho dentro do container:
+
+            ```json
+            {
+              "ScriptPath": "/scripts/update.sh",
+              "DebounceSeconds": 30,
+              "TriggerOnItemAdded": true,
+              "TriggerOnItemUpdated": false
+            }
+            ```
+
+            ---
+
+            > Veja o [README](https://github.com/iHumberto/jellyfin-plugin-scriptrunner#readme) para documentação completa.
