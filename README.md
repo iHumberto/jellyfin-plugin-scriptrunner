@@ -98,13 +98,13 @@ chmod +x ./meu-script.sh
 ---
 
 ## Como funciona
-Jellyfin detecta novo item (Filme ou Série)
-↓
-Plugin aguarda o debounce (default: 30s)
-↓
-Executa o script configurado
-↓
-Script faz o que você quiser
+Jellyfin detecta novo item (Filme ou Série) </br>
+↓ </br>
+Plugin aguarda o debounce (default: 30s) </br>
+↓ </br>
+Executa o script configurado </br>
+↓ </br>
+Script faz o que você quiser\n
 
 O debounce evita múltiplas execuções durante scans grandes — se vários itens forem adicionados em sequência, o script rodará apenas uma vez.
 
