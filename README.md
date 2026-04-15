@@ -104,7 +104,7 @@ Plugin aguarda o debounce (default: 30s) </br>
 ↓ </br>
 Executa o script configurado </br>
 ↓ </br>
-Script faz o que você quiser\n
+Script faz o que você quiser
 
 O debounce evita múltiplas execuções durante scans grandes — se vários itens forem adicionados em sequência, o script rodará apenas uma vez.
 
