@@ -121,7 +121,7 @@ O debounce evita múltiplas execuções durante scans grandes — se vários ite
 
 ## Licença
 
-MIT
+Este projeto está licenciado sob a [GNU GPL v3](LICENSE).
 
 [maintenance-shield]: https://img.shields.io/maintenance/yes/2026.svg
 [project-stage-shield]: https://img.shields.io/badge/project%20stage-production%20ready-brightgreen.svg
