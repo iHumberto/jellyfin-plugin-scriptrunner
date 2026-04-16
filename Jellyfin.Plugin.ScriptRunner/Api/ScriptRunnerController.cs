@@ -28,7 +28,55 @@ public class ScriptRunnerController : ControllerBase
     [HttpGet("scripts")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public ActionResult<IEnumerable<ScriptEntry>> GetScripts()
-        => Ok(Plg.Configuration.Scripts);
+    {
+        var config = Plg.Configuration;
+        var dir = config.ScriptsDirectory;
+
+        if (Directory.Exists(dir))
+        {
+            var diskFiles = Directory.GetFiles(dir, "*.sh");
+            bool dirty = false;
+
+            // Importa arquivos do disco que não estão na config
+            foreach (var filePath in diskFiles)
+            {
+                var scriptName = Path.GetFileNameWithoutExtension(filePath);
+
+                var existing = config.Scripts.FirstOrDefault(s => s.Name == scriptName);
+                if (existing is null)
+                {
+                    config.Scripts.Add(new ScriptEntry
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = scriptName,
+                        Content = System.IO.File.ReadAllText(filePath),
+                        DebounceSeconds = 30,
+                        TriggerOnItemAdded = true,
+                        TriggerOnItemUpdated = false
+                    });
+                    dirty = true;
+                    _logger.LogInformation("[ScriptRunner] Script re-importado do disco: {File}", filePath);
+                }
+            }
+
+            // Remove entradas órfãs (config aponta para .sh que não existe mais)
+            var toRemove = config.Scripts
+                .Where(s => !System.IO.File.Exists(Path.Combine(dir, s.Name + ".sh")))
+                .ToList();
+
+            foreach (var orphan in toRemove)
+            {
+                config.Scripts.Remove(orphan);
+                dirty = true;
+                _logger.LogInformation("[ScriptRunner] Entrada órfã removida da config: {Name}", orphan.Name);
+            }
+
+            if (dirty)
+                Plg.SaveConfiguration();
+        }
+
+        return Ok(config.Scripts);
+    }
 
     // ─── POST /ScriptRunner/scripts ───────────────────────────────
     [HttpPost("scripts")]
@@ -50,6 +98,7 @@ public class ScriptRunnerController : ControllerBase
 
         // Escreve o arquivo físico
         System.IO.File.WriteAllText(filePath, entry.Content);
+
         // Garante permissão de execução
         try
         {
