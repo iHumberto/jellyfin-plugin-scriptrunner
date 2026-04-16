@@ -122,15 +122,11 @@
         });
     };
 
-    // 🔥 executa após pequeno delay (hack necessário no Jellyfin)
-    setTimeout(function () {
-      if (typeof ApiClient !== 'undefined') {
-        console.log("INIT LOAD");
+    document.querySelector('#ScriptRunnerConfigPage')
+      .addEventListener('pageshow', function () {
+        console.log("PAGESHOW - carregando lista");
         window._srLoad();
-      } else {
-        console.log("ApiClient ainda não pronto");
-      }
-    }, 1000);
+      });
 
   })();
 </script>
