@@ -122,11 +122,21 @@
         });
     };
 
-    document.querySelector('#ScriptRunnerConfigPage')
-      .addEventListener('pageshow', function () {
-        console.log("PAGESHOW - carregando lista");
-        window._srLoad();
-      });
+    var _srLoaded = false;
+    function _srInit() {
+      if (_srLoaded) return;
+      _srLoaded = true;
+      console.log("INIT LOAD");
+      window._srLoad();
+    }
+
+    var page = document.querySelector('#ScriptRunnerConfigPage');
+    if (page) {
+      page.addEventListener('pageshow', _srInit);
+    }
+
+    // Fallback: caso o pageshow já tenha disparado antes do script executar
+    setTimeout(_srInit, 500);
 
   })();
 </script>
