@@ -1,12 +1,13 @@
+using System.Collections.Generic;
 using MediaBrowser.Model.Plugins;
+using Jellyfin.Plugin.ScriptRunner.Configuration;
 
 namespace Jellyfin.Plugin.ScriptRunner.Configuration;
 
 public class PluginConfiguration : BasePluginConfiguration
 {
-    public string ScriptPath { get; set; } = "/jellyfin/id_updater.sh";
-    public string ScriptArguments { get; set; } = string.Empty;
-    public int DebounceSeconds { get; set; } = 30;
-    public bool TriggerOnItemAdded { get; set; } = true;
-    public bool TriggerOnItemUpdated { get; set; } = false;
+    /// <summary>Diretório onde os scripts .sh serão salvos</summary>
+    public string ScriptsDirectory { get; set; } = "/config/plugins/ScriptRunner/scripts";
+
+    public List<ScriptEntry> Scripts { get; set; } = new();
 }

@@ -1,3 +1,4 @@
+using Jellyfin.Plugin.ScriptRunner.Api;
 using Jellyfin.Plugin.ScriptRunner.Consumers;
 using MediaBrowser.Controller;
 using MediaBrowser.Controller.Plugins;
@@ -10,5 +11,6 @@ public class ServiceRegistrator : IPluginServiceRegistrator
     public void RegisterServices(IServiceCollection serviceCollection, IServerApplicationHost applicationHost)
     {
         serviceCollection.AddHostedService<LibraryChangedConsumer>();
+        serviceCollection.AddTransient<ScriptRunnerController>();
     }
 }

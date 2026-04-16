@@ -4,101 +4,235 @@
   <title>Script Runner</title>
 </head>
 <body>
-  <div id="ScriptRunnerConfigPage"
-       data-role="page"
-       class="page type-interior pluginConfigurationPage"
-       data-require="emby-input,emby-button,emby-checkbox">
+<div id="ScriptRunnerConfigPage"
+     data-role="page"
+     class="page type-interior pluginConfigurationPage"
+     data-require="emby-input,emby-button,emby-checkbox,emby-select">
 
-    <div data-role="content">
-      <div class="content-primary">
-        <form id="ScriptRunnerConfigForm">
+  <div data-role="content">
+    <div class="content-primary">
 
-          <div class="sectionTitleContainer flex align-items-center">
-            <h2 class="sectionTitle">Script Runner</h2>
+      <!-- ── FORMULÁRIO DE NOVO SCRIPT ─────────────────────────── -->
+      <div class="sectionTitleContainer flex align-items-center">
+        <h2 class="sectionTitle">➕ Novo Script</h2>
+      </div>
+
+      <form id="ScriptForm">
+
+        <div class="inputContainer">
+          <label class="inputLabel inputLabelUnfocused" for="scriptName">
+            Nome do script
+          </label>
+          <input id="scriptName" type="text" class="emby-input"
+                 placeholder="id_updater" required />
+          <div class="fieldDescription">
+            Será salvo como <code>&lt;nome&gt;.sh</code> no diretório de scripts.
           </div>
+        </div>
 
-          <div class="inputContainer">
-            <label class="inputLabel inputLabelUnfocused" for="scriptPath">Caminho do Script</label>
-            <input id="scriptPath" type="text" class="emby-input"
-                   placeholder="/jellyfin/id_updater.sh" />
-            <div class="fieldDescription">
-              Caminho absoluto do script dentro do container.
-            </div>
+        <div class="inputContainer">
+          <label class="inputLabel inputLabelUnfocused" for="scriptContent">
+            Conteúdo do script
+          </label>
+          <textarea id="scriptContent" class="emby-textarea"
+                    rows="12"
+                    style="font-family:monospace;width:100%;resize:vertical"
+                    placeholder="#!/bin/bash&#10;# Seu script aqui&#10;echo 'Olá, Jellyfin!'"
+                    required></textarea>
+        </div>
+
+        <div class="inputContainer">
+          <label class="inputLabel inputLabelUnfocused" for="debounceSeconds">
+            Debounce (segundos)
+          </label>
+          <input id="debounceSeconds" type="number" class="emby-input"
+                 min="5" max="600" value="30" />
+          <div class="fieldDescription">
+            Tempo de espera após o último evento antes de executar. Recomendado: 30s.
           </div>
+        </div>
 
-          <div class="inputContainer">
-            <label class="inputLabel inputLabelUnfocused" for="scriptArguments">Argumentos (opcional)</label>
-            <input id="scriptArguments" type="text" class="emby-input" placeholder="--force" />
-          </div>
+        <div class="checkboxContainer checkboxContainer-withDescription">
+          <label>
+            <input id="triggerOnItemAdded" type="checkbox" is="emby-checkbox" checked />
+            <span>Disparar ao <strong>adicionar</strong> novas mídias</span>
+          </label>
+        </div>
 
-          <div class="inputContainer">
-            <label class="inputLabel inputLabelUnfocused" for="debounceSeconds">Debounce (segundos)</label>
-            <input id="debounceSeconds" type="number" class="emby-input" min="5" max="600" />
-            <div class="fieldDescription">
-              Tempo de espera após o último evento antes de executar o script. Recomendado: 30.
-            </div>
-          </div>
+        <div class="checkboxContainer checkboxContainer-withDescription">
+          <label>
+            <input id="triggerOnItemUpdated" type="checkbox" is="emby-checkbox" />
+            <span>Disparar ao <strong>atualizar</strong> mídias existentes</span>
+          </label>
+        </div>
 
-          <div class="checkboxContainer">
-            <label>
-              <input id="triggerOnItemAdded" type="checkbox" is="emby-checkbox" />
-              <span>Disparar quando um item for <strong>adicionado</strong></span>
-            </label>
-          </div>
+        <div style="margin-top:1.5em">
+          <button is="emby-button" type="submit"
+                  class="raised button-submit emby-button">
+            <span>💾 Salvar Script</span>
+          </button>
+        </div>
 
-          <div class="checkboxContainer">
-            <label>
-              <input id="triggerOnItemUpdated" type="checkbox" is="emby-checkbox" />
-              <span>Disparar quando um item for <strong>atualizado</strong></span>
-            </label>
-          </div>
+      </form>
 
-          <div>
-            <button is="emby-button" type="submit" class="raised button-submit block emby-button">
-              <span>Salvar</span>
-            </button>
-          </div>
+      <div style="margin-top:2.5em;border-top:1px solid var(--divider-color,#444);padding-top:1.5em">
 
-        </form>
+        <!-- ── LISTA DE SCRIPTS ATIVOS ────────────────────────────── -->
+        <div class="sectionTitleContainer flex align-items-center">
+          <h2 class="sectionTitle">📋 Scripts Ativos</h2>
+        </div>
+
+        <div id="scriptList" style="margin-top:1em">
+          <p id="emptyState" style="color:var(--text-color-secondary)">
+            Nenhum script cadastrado ainda.
+          </p>
+        </div>
+
       </div>
     </div>
   </div>
+</div>
 
-  <script type="text/javascript">
-    var pluginId = 'a1b2c3d4-e5f6-7890-abcd-ef1234567890';
+<script type="text/javascript">
+(function () {
+  var BASE = '/ScriptRunner';
 
-    function loadConfig(page) {
-      ApiClient.getPluginConfiguration(pluginId).then(function (config) {
-        page.querySelector('#scriptPath').value          = config.ScriptPath || '';
-        page.querySelector('#scriptArguments').value    = config.ScriptArguments || '';
-        page.querySelector('#debounceSeconds').value    = config.DebounceSeconds != null ? config.DebounceSeconds : 30;
-        page.querySelector('#triggerOnItemAdded').checked   = config.TriggerOnItemAdded !== false;
-        page.querySelector('#triggerOnItemUpdated').checked = config.TriggerOnItemUpdated === true;
-      });
-    }
+  // ── Carrega e renderiza a lista ──────────────────────────────────
+  function loadList() {
+    ApiClient.fetch({
+      type: 'GET',
+      url: ApiClient.getUrl(BASE + '/scripts'),
+      dataType: 'json'
+    }).then(function (scripts) {
+      renderList(scripts);
+    }).catch(function () {
+      renderList([]);
+    });
+  }
 
-    function saveConfig(page) {
-      ApiClient.getPluginConfiguration(pluginId).then(function (config) {
-        config.ScriptPath           = page.querySelector('#scriptPath').value;
-        config.ScriptArguments      = page.querySelector('#scriptArguments').value;
-        config.DebounceSeconds      = parseInt(page.querySelector('#debounceSeconds').value, 10) || 30;
-        config.TriggerOnItemAdded   = page.querySelector('#triggerOnItemAdded').checked;
-        config.TriggerOnItemUpdated = page.querySelector('#triggerOnItemUpdated').checked;
+  function renderList(scripts) {
+    var list = document.getElementById('scriptList');
+    var empty = document.getElementById('emptyState');
 
-        ApiClient.updatePluginConfiguration(pluginId, config).then(function () {
-          Dashboard.processPluginConfigurationUpdateResult();
-        });
-      });
-    }
-
-    document.querySelector('#ScriptRunnerConfigPage').addEventListener('pageshow', function (e) {
-      loadConfig(e.target);
+    // Remove itens anteriores (preserva o emptyState)
+    Array.from(list.querySelectorAll('.script-item')).forEach(function (el) {
+      el.remove();
     });
 
-    document.querySelector('#ScriptRunnerConfigForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      saveConfig(document.querySelector('#ScriptRunnerConfigPage'));
+    if (!scripts || scripts.length === 0) {
+      empty.style.display = '';
+      return;
+    }
+
+    empty.style.display = 'none';
+
+    scripts.forEach(function (s) {
+      var row = document.createElement('div');
+      row.className = 'script-item';
+      row.style.cssText = [
+        'display:flex',
+        'align-items:center',
+        'justify-content:space-between',
+        'padding:0.75em 1em',
+        'margin-bottom:0.5em',
+        'background:var(--card-color, rgba(255,255,255,0.05))',
+        'border-radius:4px',
+        'border:1px solid var(--divider-color, rgba(255,255,255,0.1))'
+      ].join(';');
+
+      var triggers = [];
+      if (s.triggerOnItemAdded || s.TriggerOnItemAdded) triggers.push('adicionado');
+      if (s.triggerOnItemUpdated || s.TriggerOnItemUpdated) triggers.push('atualizado');
+
+      var name = s.name || s.Name || '(sem nome)';
+      var debounce = s.debounceSeconds || s.DebounceSeconds || 30;
+
+      row.innerHTML = [
+        '<div>',
+        '  <strong style="font-size:1em">' + escHtml(name) + '.sh</strong>',
+        '  <div style="font-size:0.8em;color:var(--text-color-secondary);margin-top:0.25em">',
+        '    Debounce: ' + debounce + 's',
+        triggers.length ? ' · Dispara ao: ' + triggers.join(', ') : '',
+        '  </div>',
+        '</div>',
+        '<button class="btn-delete emby-button" data-id="' + (s.id || s.Id) + '"',
+        '  title="Excluir script"',
+        '  style="background:transparent;color:var(--error-color,#f44336);',
+        '         border:none;cursor:pointer;font-size:1.2em;padding:0.25em 0.5em">',
+        '  ✕',
+        '</button>'
+      ].join('');
+
+      list.appendChild(row);
     });
-  </script>
+
+    // Bind delete buttons
+    list.querySelectorAll('.btn-delete').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = btn.getAttribute('data-id');
+        if (confirm('Excluir este script?')) {
+          deleteScript(id);
+        }
+      });
+    });
+  }
+
+  // ── Salva novo script ─────────────────────────────────────────────
+  document.getElementById('ScriptForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    var payload = {
+      Name: document.getElementById('scriptName').value.trim(),
+      Content: document.getElementById('scriptContent').value,
+      DebounceSeconds: parseInt(document.getElementById('debounceSeconds').value, 10) || 30,
+      TriggerOnItemAdded: document.getElementById('triggerOnItemAdded').checked,
+      TriggerOnItemUpdated: document.getElementById('triggerOnItemUpdated').checked
+    };
+
+    ApiClient.fetch({
+      type: 'POST',
+      url: ApiClient.getUrl(BASE + '/scripts'),
+      data: JSON.stringify(payload),
+      contentType: 'application/json'
+    }).then(function () {
+      // Limpa o formulário
+      document.getElementById('scriptName').value = '';
+      document.getElementById('scriptContent').value = '';
+      document.getElementById('debounceSeconds').value = '30';
+      document.getElementById('triggerOnItemAdded').checked = true;
+      document.getElementById('triggerOnItemUpdated').checked = false;
+
+      Dashboard.alert('Script salvo com sucesso!');
+      loadList();
+    }).catch(function (err) {
+      Dashboard.alert('Erro ao salvar: ' + (err.message || err));
+    });
+  });
+
+  // ── Exclui script ─────────────────────────────────────────────────
+  function deleteScript(id) {
+    ApiClient.fetch({
+      type: 'DELETE',
+      url: ApiClient.getUrl(BASE + '/scripts/' + id)
+    }).then(function () {
+      loadList();
+    }).catch(function (err) {
+      Dashboard.alert('Erro ao excluir: ' + (err.message || err));
+    });
+  }
+
+  // ── Utilitário ───────────────────────────────────────────────────
+  function escHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  // ── Inicializa ao exibir a página ─────────────────────────────────
+  document.getElementById('ScriptRunnerConfigPage')
+    .addEventListener('pageshow', function () {
+      loadList();
+    });
+
+})();
+</script>
 </body>
 </html>
