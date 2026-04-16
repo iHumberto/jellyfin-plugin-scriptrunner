@@ -25,8 +25,10 @@ Perfect for keeping slideshows, playlists, or any external file always in sync w
 
 Go to **Dashboard → Plugins → ScriptRunner** and add a new script entry.
 
-<!-- Replace the line below with your config page screenshot -->
-<!-- ![Config Page](docs/config-screenshot.png) -->
+<img width="1627" height="1000" alt="image" src="https://github.com/user-attachments/assets/67457b10-9b28-4f1d-a8bf-a2b06a3812fe" />
+
+<img width="1623" height="1008" alt="image" src="https://github.com/user-attachments/assets/545f728f-f11f-42b7-b755-4ae8755c601a" />
+
 
 | Field | Description |
 |-------|-------------|
