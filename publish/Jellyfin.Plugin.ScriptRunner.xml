@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Jellyfin.Plugin.ScriptRunner</name>
+    </assembly>
+    <members>
+        <member name="P:Jellyfin.Plugin.ScriptRunner.Configuration.PluginConfiguration.ScriptsDirectory">
+            <summary>Diretório onde os scripts .sh serão salvos</summary>
+        </member>
+        <member name="P:Jellyfin.Plugin.ScriptRunner.Configuration.ScriptEntry.Name">
+            <summary>Nome do arquivo, ex: "id_updater" (sem .sh)</summary>
+        </member>
+        <member name="P:Jellyfin.Plugin.ScriptRunner.Configuration.ScriptEntry.Content">
+            <summary>Conteúdo completo do script (shebang + comandos)</summary>
+        </member>
+    </members>
+</doc>
