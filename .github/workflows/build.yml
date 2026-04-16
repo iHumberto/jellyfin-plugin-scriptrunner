@@ -29,6 +29,7 @@ jobs:
       id: jprm
       with:
         dotnet-target: 'net8.0'
+        path: 'Jellyfin.Plugin.ScriptRunner'
 
     - name: Upload artifact do build
       uses: actions/upload-artifact@v4
