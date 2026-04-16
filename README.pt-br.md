@@ -5,7 +5,7 @@
 
 # Jellyfin Script Runner Plugin
 
-Plugin para o [Jellyfin](https://jellyfin.org) que executa um script customizado automaticamente sempre que um item for adicionado ou atualizado na biblioteca.
+Plugin para o [Jellyfin](https://jellyfin.org) que executa um script customizado automaticamente sempre que um item for adicionado e/ou atualizado na biblioteca.
 
 Ideal para manter slideshows, listas ou qualquer arquivo externo sempre sincronizado com as mídias do servidor.
 
