@@ -1,127 +1,67 @@
 ![Project Stage][project-stage-shield]
 ![Maintenance][maintenance-shield]
 
+> 🇧🇷 [Leia em Português](README.pt-br.md)
 
 # Jellyfin Script Runner Plugin
 
-Plugin para o [Jellyfin](https://jellyfin.org) que executa um script customizado automaticamente sempre que um item for adicionado ou atualizado na biblioteca.
+Plugin for [Jellyfin](https://jellyfin.org) that automatically runs a custom script whenever an item is added e/or updated in the library.
 
-Ideal para manter slideshows, listas ou qualquer arquivo externo sempre sincronizado com as mídias do servidor.
-
----
-
-## Instalação via Repositório (Recomendado)
-
-1. Acesse o painel do Jellyfin
-2. Vá em **Dashboard → Plugins → Repositórios**
-3. Clique em **+** e adicione a URL: 
-```https://raw.githubusercontent.com/iHumberto/jellyfin-plugin-scriptrunner/main/manifest.json```
-4. Vá para **Catálogo** e instale o **Script Runner**
-5. Reinicie o Jellyfin
-6. Crie o arquivo `config.json` (veja abaixo)
+Perfect for keeping slideshows, playlists, or any external file always in sync with your server's media.
 
 ---
 
-## Instalação Manual
+## Installation
 
-1. Baixe a DLL mais recente na aba [Releases](https://github.com/iHumberto/jellyfin-plugin-scriptrunner/releases)
-2. Crie a pasta `/config/plugins/ScriptRunner/`
-3. Copie a DLL para essa pasta
-4. Crie o arquivo `config.json` (veja abaixo)
-5. Reinicie o Jellyfin
-
----
-
-## Configuração
-
-Crie o arquivo `config.json` dentro da pasta do plugin: ```config/plugins/ScriptRunner/config.json```
-
-
-```json
-{
-  "ScriptPath": "/caminho/do_script.sh",
-  "ScriptArguments": "",
-  "DebounceSeconds": 30,
-  "TriggerOnItemAdded": true,
-  "TriggerOnItemUpdated": false
-}
-```
-
-| Campo | Tipo | Descrição |
-|-------|------|-----------|
-| `ScriptPath` | string | Caminho absoluto do script a executar |
-| `ScriptArguments` | string | Argumentos opcionais passados ao script |
-| `DebounceSeconds` | int | Tempo em segundos após o último evento antes de executar |
-| `TriggerOnItemAdded` | bool | Dispara quando um item é adicionado |
-| `TriggerOnItemUpdated` | bool | Dispara quando um item é atualizado |
-
-> **Nota:** Alterações no `config.json` passam a valer após reiniciar o Jellyfin.
+1. Open the Jellyfin dashboard
+2. Go to **Dashboard → Plugins → Repositories**
+3. Click **+** and add the URL: <br/>`https://raw.githubusercontent.com/iHumberto/jellyfin-plugin-scriptrunner/main/manifest.json`
+4. Go to **Catalog** and install **ScriptRunner**
+5. Restart Jellyfin
 
 ---
 
-## Uso com Docker
+## Configuration
 
-Exemplo de `docker-compose.yaml`:
+Go to **Dashboard → Plugins → ScriptRunner** and add a new script entry.
 
-```yaml
-services:
-  jellyfin:
-    image: jellyfin/jellyfin
-    volumes:
-      - ./data:/config
-      - ./plugins:/config/plugins
-      - ./meu-script.sh:/jellyfin/meu-script.sh
-```
+<!-- Replace the line below with your config page screenshot -->
+<!-- ![Config Page](docs/config-screenshot.png) -->
 
-No host, crie os arquivos:
-
-```bash
-mkdir -p ./plugins/ScriptRunner
-
-cat > ./plugins/ScriptRunner/config.json << EOF
-{
-  "ScriptPath": "/jellyfin/meu-script.sh",
-  "ScriptArguments": "",
-  "DebounceSeconds": 30,
-  "TriggerOnItemAdded": true,
-  "TriggerOnItemUpdated": false
-}
-EOF
-```
-
-Certifique-se que o script tem permissão de execução:
-
-```bash
-chmod +x ./meu-script.sh
-```
+| Field | Description |
+|-------|-------------|
+| **Name** | A name to identify this script |
+| **Content** | The script content to execute |
+| **Debounce (seconds)** | How long to wait after the last event before running (avoids multiple triggers during large scans) |
+| **Trigger on item added** | Run the script when a new item is added to the library |
+| **Trigger on item updated** | Run the script when an existing item is updated |
 
 ---
 
-## Como funciona
-Jellyfin detecta novo item (Filme ou Série) </br>
-↓ </br>
-Plugin aguarda o debounce (default: 30s) </br>
-↓ </br>
-Executa o script configurado </br>
-↓ </br>
-Script faz o que você quiser
-
-O debounce evita múltiplas execuções durante scans grandes — se vários itens forem adicionados em sequência, o script rodará apenas uma vez.
+## How It Works
+Jellyfin detects a new item (Movie or Series) <br/>
+↓<br/>
+Plugin waits for the debounce timer (default: 30s)<br/>
+↓<br/>
+Executes the configured script<br/>
+↓<br/>
+Script does whatever you need<br/>
 
 ---
 
-## Compatibilidade
+## Compatibility
 
 | Jellyfin | Status |
 |----------|--------|
-| 10.10.x  | ✅ Suportado |
-| 10.9.x   | Não testado |
+| 10.10.x  | ✅ Supported |
+| 10.9.x   | Not tested |
 
 ---
 
-## Licença
+## License
 
-Este projeto está licenciado sob a [GNU GPL v3](LICENSE).
+This project is licensed under the [GNU GPL v3](LICENSE).
 
 [maintenance-shield]: https://img.shields.io/maintenance/yes/2026.svg
 [project-stage-shield]: https://img.shields.io/badge/project%20stage-production%20ready-brightgreen.svg
+   
