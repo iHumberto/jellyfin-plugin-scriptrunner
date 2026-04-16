@@ -1,119 +1,136 @@
-<!DOCTYPE html>
-<html>
+<div id="ScriptRunnerConfigPage" data-role="page" class="page type-interior pluginConfigurationPage"
+  data-require="emby-input,emby-button,emby-checkbox">
 
-<head>
-  <title>Script Runner</title>
-</head>
+  <div data-role="content">
+    <div class="content-primary">
 
-<body>
-  <div id="ScriptRunnerConfigPage" data-role="page" class="page type-interior pluginConfigurationPage"
-    data-require="emby-input,emby-button,emby-checkbox">
+      <div class="sectionTitleContainer flex align-items-center">
+        <h2 class="sectionTitle">Novo Script</h2>
+      </div>
 
-    <div data-role="content">
-      <div class="content-primary">
+      <form id="ScriptRunnerForm">
 
-        <div class="sectionTitleContainer flex align-items-center">
-          <h2 class="sectionTitle">Novo Script</h2>
+        <div class="inputContainer">
+          <label class="inputLabel inputLabelUnfocused" for="scriptName">Nome do script</label>
+          <input id="scriptName" type="text" class="emby-input" placeholder="id_updater" />
+          <div class="fieldDescription">Será salvo como &lt;nome&gt;.sh no diretório de scripts.</div>
         </div>
 
-        <form id="ScriptRunnerForm">
+        <div class="inputContainer">
+          <label class="inputLabel inputLabelUnfocused" for="scriptContent">Conteúdo do script</label>
+          <textarea id="scriptContent"
+            style="width:100%;min-height:200px;resize:vertical;font-family:monospace;background:transparent;color:inherit;border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:8px;font-size:13px"
+            placeholder="#!/bin/bash&#10;echo 'Olá, Jellyfin!'"></textarea>
+        </div>
 
-          <div class="inputContainer">
-            <label class="inputLabel inputLabelUnfocused" for="scriptName">Nome do script</label>
-            <input id="scriptName" type="text" class="emby-input" placeholder="id_updater" />
-            <div class="fieldDescription">Será salvo como &lt;nome&gt;.sh no diretório de scripts.</div>
+        <div class="inputContainer">
+          <label class="inputLabel inputLabelUnfocused" for="debounceSeconds">Debounce (segundos)</label>
+          <input id="debounceSeconds" type="number" class="emby-input" min="5" max="600" value="30" />
+          <div class="fieldDescription">Tempo de espera após o último evento antes de executar. Recomendado: 30s.
           </div>
+        </div>
 
-          <div class="inputContainer">
-            <label class="inputLabel inputLabelUnfocused" for="scriptContent">Conteúdo do script</label>
-            <textarea id="scriptContent"
-              style="width:100%;min-height:200px;resize:vertical;font-family:monospace;background:transparent;color:inherit;border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:8px;font-size:13px"
-              placeholder="#!/bin/bash&#10;echo 'Olá, Jellyfin!'"></textarea>
-          </div>
+        <div class="checkboxContainer">
+          <label>
+            <input id="triggerOnItemAdded" type="checkbox" is="emby-checkbox" checked />
+            <span>Disparar ao <strong>adicionar</strong> novas mídias</span>
+          </label>
+        </div>
 
-          <div class="inputContainer">
-            <label class="inputLabel inputLabelUnfocused" for="debounceSeconds">Debounce (segundos)</label>
-            <input id="debounceSeconds" type="number" class="emby-input" min="5" max="600" value="30" />
-            <div class="fieldDescription">Tempo de espera após o último evento antes de executar. Recomendado: 30s.
-            </div>
-          </div>
+        <div class="checkboxContainer">
+          <label>
+            <input id="triggerOnItemUpdated" type="checkbox" is="emby-checkbox" />
+            <span>Disparar ao <strong>atualizar</strong> mídias existentes</span>
+          </label>
+        </div>
 
-          <div class="checkboxContainer">
-            <label>
-              <input id="triggerOnItemAdded" type="checkbox" is="emby-checkbox" checked />
-              <span>Disparar ao <strong>adicionar</strong> novas mídias</span>
-            </label>
-          </div>
-
-          <div class="checkboxContainer">
-            <label>
-              <input id="triggerOnItemUpdated" type="checkbox" is="emby-checkbox" />
-              <span>Disparar ao <strong>atualizar</strong> mídias existentes</span>
-            </label>
-          </div>
-
-          <button type="button"
-            style="color:#fff;background:#00a4dc;border:none;border-radius:4px;padding:0.6em 1.4em;font-size:1em;cursor:pointer;"
-            onclick="(function(){
+        <button type="button"
+          style="color:#fff;background:#00a4dc;border:none;border-radius:4px;padding:0.6em 1.4em;font-size:1em;cursor:pointer;"
+          onclick="(function(){
           var name=document.getElementById('scriptName').value.trim();
           var content=document.getElementById('scriptContent').value;
           if(!name){Dashboard.alert('Informe o nome.');return;}
           if(!content.trim()){Dashboard.alert('Conteúdo vazio.');return;}
           ApiClient.ajax({type:'POST',url:ApiClient.getUrl('ScriptRunner/scripts'),data:JSON.stringify({Name:name,Content:content,DebounceSeconds:parseInt(document.getElementById('debounceSeconds').value)||30,TriggerOnItemAdded:document.getElementById('triggerOnItemAdded').checked,TriggerOnItemUpdated:document.getElementById('triggerOnItemUpdated').checked}),contentType:'application/json',dataType:'json'}).then(function(){document.getElementById('scriptName').value='';document.getElementById('scriptContent').value='';document.getElementById('debounceSeconds').value='30';document.getElementById('triggerOnItemAdded').checked=true;document.getElementById('triggerOnItemUpdated').checked=false;ApiClient.ajax({type:'GET',url:ApiClient.getUrl('ScriptRunner/scripts'),dataType:'json'}).then(function(r){window._srRender(r||[]);});Dashboard.alert('Salvo!');}).catch(function(e){Dashboard.alert('Erro: '+e.status);});
         })()">
-            Salvar Script
-          </button>
+          Salvar Script
+        </button>
 
-        </form>
+      </form>
 
-        <div style="margin-top:2.5em;border-top:1px solid rgba(255,255,255,0.15);padding-top:1.5em">
-          <div class="sectionTitleContainer">
-            <h2 class="sectionTitle">Scripts Ativos</h2>
-          </div>
-          <div id="scriptList" style="margin-top:1em">
-            <p id="emptyState" style="opacity:0.5">Nenhum script cadastrado ainda.</p>
-          </div>
+      <div style="margin-top:2.5em;border-top:1px solid rgba(255,255,255,0.15);padding-top:1.5em">
+        <div class="sectionTitleContainer">
+          <h2 class="sectionTitle">Scripts Ativos</h2>
         </div>
-
+        <div id="scriptList" style="margin-top:1em">
+          <p id="emptyState" style="opacity:0.5">Nenhum script cadastrado ainda.</p>
+        </div>
       </div>
+
     </div>
   </div>
+</div>
 
-  <script type="text/javascript">
-  window._srRender = function(scripts) {
-    var list  = document.getElementById('scriptList');
-    var empty = document.getElementById('emptyState');
-    Array.from(list.querySelectorAll('.script-item')).forEach(function(el){ el.remove(); });
-    if (!scripts || !scripts.length) { empty.style.display = ''; return; }
-    empty.style.display = 'none';
-    scripts.forEach(function(s) {
-      var id = s.Id, name = s.Name||'(sem nome)', debounce = s.DebounceSeconds||30;
-      var triggers = [];
-      if (s.TriggerOnItemAdded)   triggers.push('adicionado');
-      if (s.TriggerOnItemUpdated) triggers.push('atualizado');
-      var row = document.createElement('div');
-      row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:0.75em 1em;margin-bottom:0.5em;border-radius:4px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1)';
-      var safeName = String(name).replace(/'/g,"\\'");
-      row.innerHTML =
-        '<div><strong>'+String(name).replace(/</g,'&lt;')+'.sh</strong>'+
-        '<div style="font-size:0.8em;opacity:0.6;margin-top:0.2em">Debounce: '+debounce+'s'+
-        (triggers.length?' &nbsp;·&nbsp; Dispara ao: '+triggers.join(', '):'')+
-        '</div></div>'+
-        '<button type="button" onclick="(function(){if(!confirm(\'Excluir '+safeName+'.sh?\')){return;}ApiClient.ajax({type:\'DELETE\',url:ApiClient.getUrl(\'ScriptRunner/scripts/'+id+'\')}).then(function(){ApiClient.ajax({type:\'GET\',url:ApiClient.getUrl(\'ScriptRunner/scripts\'),dataType:\'json\'}).then(function(r){window._srRender(r||[]);});}).catch(function(e){Dashboard.alert(\'Erro: \'+e.status);});})();" style="background:transparent;border:none;cursor:pointer;color:#f44336;font-size:1.2em;padding:0.25em 0.5em">✕</button>';
-      list.appendChild(row);
-    });
-  };
+<script>
+  (function () {
 
-  // Carrega lista inicial
-  setTimeout(function(){
-    if(typeof ApiClient !== 'undefined'){
-      ApiClient.ajax({type:'GET',url:ApiClient.getUrl('ScriptRunner/scripts'),dataType:'json'})
-        .then(function(r){ window._srRender(r||[]); })
-        .catch(function(){ window._srRender([]); });
-    }
-  }, 800);
+    console.log("SR INLINE JS CARREGADO");
+
+    window._srRender = function (scripts) {
+      console.log("Render:", scripts);
+
+      var list = document.getElementById('scriptList');
+      var empty = document.getElementById('emptyState');
+
+      Array.from(list.querySelectorAll('.script-item')).forEach(function (el) {
+        el.remove();
+      });
+
+      if (!scripts || !scripts.length) {
+        empty.style.display = '';
+        return;
+      }
+
+      empty.style.display = 'none';
+
+      scripts.forEach(function (s) {
+        var row = document.createElement('div');
+        row.className = 'script-item';
+
+        row.innerHTML =
+          '<span>' + s.Name + '.sh</span>' +
+          '<button onclick="ApiClient.ajax({type:\'DELETE\',url:ApiClient.getUrl(\'ScriptRunner/scripts/' + s.Id + '\')}).then(function(){ window._srLoad(); })">Excluir</button>';
+
+        list.appendChild(row);
+      });
+    };
+
+    window._srLoad = function () {
+      console.log("GET scripts");
+
+      ApiClient.ajax({
+        type: 'GET',
+        url: ApiClient.getUrl('ScriptRunner/scripts'),
+        dataType: 'json'
+      })
+        .then(function (r) {
+          console.log("GET OK:", r);
+          window._srRender(r || []);
+        })
+        .catch(function (e) {
+          console.error("GET erro:", e);
+        });
+    };
+
+    // 🔥 executa após pequeno delay (hack necessário no Jellyfin)
+    setTimeout(function () {
+      if (typeof ApiClient !== 'undefined') {
+        console.log("INIT LOAD");
+        window._srLoad();
+      } else {
+        console.log("ApiClient ainda não pronto");
+      }
+    }, 1000);
+
+  })();
 </script>
-
-</body>
-
-</html>

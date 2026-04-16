@@ -18,8 +18,8 @@ public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
         Instance = this;
     }
 
-    public override string Name => "Script Runner";
-    public override Guid Id => Guid.Parse("a1b2c3d4-e5f6-7890-abcd-ef1234567890");
+    public override string Name => "ScriptRunner";
+    public override Guid Id => Guid.Parse("b7c9e1d2-1234-4abc-9def-123456789abc");
     public override string Description => "Gerencia e executa scripts quando a biblioteca é atualizada.";
 
     // Registra a página de configuração na dashboard
@@ -29,7 +29,7 @@ public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
         {
             new PluginPageInfo
             {
-                Name = Name,
+                Name = "config",
                 EmbeddedResourcePath = $"{GetType().Namespace}.Configuration.config.html"
             }
         };
