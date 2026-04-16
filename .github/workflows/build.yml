@@ -3,142 +3,107 @@ name: Build & Release Plugin
 on:
   push:
     tags:
-      - 'v*'
+    - 'v*'
     branches:
-      - main
+    - main
     paths:
-      - 'Jellyfin.Plugin.ScriptRunner/**'
-      - 'Jellyfin.Plugin.ScriptRunner/*.csproj'
-      - 'Jellyfin.Plugin.ScriptRunner/*.cs'
-    pull_request:
-      branches:
-        - main
+    - 'Jellyfin.Plugin.ScriptRunner/**'
+  pull_request:
+    branches:
+    - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/checkout@v4
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
 
-      - name: Build
-        run: dotnet build -c Release Jellyfin.Plugin.ScriptRunner/jellyfin-script-runner.csproj
+    - name: Build com JPRM (gera o .zip no formato Jellyfin)
+      uses: oddstr13/jellyfin-plugin-repository-manager@v1.1.1
+      id: jprm
+      with:
+        dotnet-target: 'net8.0'
 
-      - name: Calcular MD5
-        id: md5
-        run: |
-          MD5=$(md5sum Jellyfin.Plugin.ScriptRunner/bin/Release/net8.0/Jellyfin.Plugin.ScriptRunner.dll | cut -d' ' -f1)
-          echo "checksum=$MD5" >> $GITHUB_OUTPUT
+    - name: Upload artifact do build
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifact
+        path: ${{ steps.jprm.outputs.artifact }}
+        if-no-files-found: error
 
-      - name: Atualizar manifest.json
-        run: |
-          VERSION="${GITHUB_REF_NAME#v}"
-          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          SOURCE_URL="https://github.com/${{ github.repository }}/releases/download/${GITHUB_REF_NAME}/Jellyfin.Plugin.ScriptRunner.dll"
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
 
-          jq --arg version "$VERSION.0" \
-             --arg checksum "${{ steps.md5.outputs.checksum }}" \
-             --arg sourceUrl "$SOURCE_URL" \
-             --arg timestamp "$TIMESTAMP" \
-             '.[0].versions = [{
-               "version": $version,
-               "changelog": "Veja o release no GitHub.",
-               "targetAbi": "10.10.0.0",
-               "sourceUrl": $sourceUrl,
-               "checksum": $checksum,
-               "timestamp": $timestamp
-             }]' manifest.json > manifest.tmp && mv manifest.tmp manifest.json
+    steps:
+    - uses: actions/checkout@v4
 
-      - name: Commit manifest.json atualizado
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add manifest.json
-          git commit -m "chore: atualiza manifest.json para ${GITHUB_REF_NAME}"
-          git push origin HEAD:main
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: build-artifact
+        path: ./artifact
 
-      - name: Criar Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: Jellyfin.Plugin.ScriptRunner/bin/Release/net8.0/Jellyfin.Plugin.ScriptRunner.dll
-          body: |
-            ## Instalação via Repositório (Recomendado)
+    - name: Gerar checksums
+      run: |
+        cd artifact
+        for file in ./*.zip; do
+          md5sum "${file#./}" > "${file%.zip}.md5"
+          sha256sum "${file#./}" > "${file%.zip}.sha256"
+        done
+        ls -lh
 
-            1. Acesse o painel do Jellyfin
-            2. Vá em **Dashboard → Plugins → Repositórios**
-            3. Clique em **+** e adicione a URL:
-            ```
-            https://raw.githubusercontent.com/iHumberto/jellyfin-plugin-scriptrunner/main/manifest.json
-            ```
-            4. Vá para **Catálogo** e instale o **Script Runner**
-            5. Reinicie o Jellyfin
-            6. Crie o arquivo `config.json` (veja abaixo)
+    - name: Atualizar manifest.json
+      run: |
+        ZIP_FILE=$(ls artifact/*.zip | head -n1)
+        VERSION="${GITHUB_REF_NAME#v}"
+        CHECKSUM=$(md5sum "$ZIP_FILE" | cut -d' ' -f1)
+        TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+        SOURCE_URL="https://github.com/${{ github.repository }}/releases/download/${GITHUB_REF_NAME}/$(basename $ZIP_FILE)"
 
-            ---
+        jq --arg version "$VERSION.0" \
+           --arg checksum "$CHECKSUM" \
+           --arg sourceUrl "$SOURCE_URL" \
+           --arg timestamp "$TIMESTAMP" \
+        '.[0].versions = [{
+          "version": $version,
+          "changelog": "Veja o release no GitHub.",
+          "targetAbi": "10.10.0.0",
+          "sourceUrl": $sourceUrl,
+          "checksum": $checksum,
+          "timestamp": $timestamp
+        }]' manifest.json > manifest.tmp && mv manifest.tmp manifest.json
 
-            ## Configuração
+    - name: Commit manifest.json atualizado
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add manifest.json
+        git commit -m "chore: atualiza manifest.json para ${GITHUB_REF_NAME}" || echo "Sem alterações"
+        git push origin HEAD:main
 
-            Crie `config/plugins/ScriptRunner/config.json`:
+    - name: Criar Release com .zip + checksums
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          artifact/*.zip
+          artifact/*.md5
+          artifact/*.sha256
+        body: |
+          ## Instalação via Repositório (Recomendado)
 
-            ```json
-            {
-              "ScriptPath": "/caminho/do_script.sh",
-              "ScriptArguments": "",
-              "DebounceSeconds": 30,
-              "TriggerOnItemAdded": true,
-              "TriggerOnItemUpdated": false
-            }
-            ```
-
-            ---
-
-            ## Exemplo de Script
-
-            ### No Host
-
-            ```bash
-            #!/bin/bash
-            echo "[Script Runner] Biblioteca atualizada em $(date)"
-            # adicione sua lógica aqui
-            ```
-
-            Deixe executável:
-            ```bash
-            chmod +x /caminho/do_script.sh
-            ```
-
-            ### Com Docker
-
-            No `docker-compose.yaml`, monte o script:
-
-            ```yaml
-            services:
-              jellyfin:
-                image: jellyfin/jellyfin
-                volumes:
-                  - ./data:/config
-                  - ./plugins:/config/plugins
-                  - ./update.sh:/scripts/update.sh
-            ```
-
-            No `config.json`, use o caminho dentro do container:
-
-            ```json
-            {
-              "ScriptPath": "/scripts/update.sh",
-              "DebounceSeconds": 30,
-              "TriggerOnItemAdded": true,
-              "TriggerOnItemUpdated": false
-            }
-            ```
-
-            ---
-
-            > Veja o [README](https://github.com/iHumberto/jellyfin-plugin-scriptrunner#readme) para documentação completa.
+          1. Acesse o painel do Jellyfin
+          2. Vá em **Dashboard → Plugins → Repositórios**
+          3. Adicione a URL:
+          ```
+          https://raw.githubusercontent.com/${{ github.repository }}/main/manifest.json
+          ```
+          4. Vá para **Catálogo** e instale o **Script Runner**
+          5. Reinicie o Jellyfin
