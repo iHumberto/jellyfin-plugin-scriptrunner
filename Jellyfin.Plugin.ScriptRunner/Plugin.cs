@@ -19,7 +19,7 @@ public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
     }
 
     public override string Name => "ScriptRunner";
-    public override Guid Id => Guid.Parse("b7c9e1d2-1234-4abc-9def-123456789abc");
+    public override Guid Id => Guid.Parse("b7c9e1d2-1234-4abc-9def-123456789abd");
     public override string Description => "Gerencia e executa scripts quando a biblioteca é atualizada.";
 
     // Registra a página de configuração na dashboard
