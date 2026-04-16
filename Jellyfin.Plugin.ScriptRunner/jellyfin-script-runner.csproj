@@ -5,7 +5,13 @@
     <RootNamespace>Jellyfin.Plugin.ScriptRunner</RootNamespace>
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Version>1.0.0.0</Version>
+
+    <Version>2.0.0.0</Version>
+    <Product>Script Runner</Product>
+    <Description>Executa scripts do usuário ao adicionar ou atualizar mídias na biblioteca</Description>
+    <Company>iHumberto</Company>
+    <Authors>iHumberto</Authors>
+    <Copyright>Copyright © 2026 iHumberto</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,5 +23,9 @@
 
   <ItemGroup>
     <Compile Remove="jellyfin-plugin-template\**\*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Configuration\config.html" />
   </ItemGroup>
 </Project>

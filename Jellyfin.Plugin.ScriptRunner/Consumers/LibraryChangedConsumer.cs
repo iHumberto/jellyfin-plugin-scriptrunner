@@ -1,10 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Jellyfin.Plugin.ScriptRunner.Configuration;
 using MediaBrowser.Controller.Entities.Movies;
 using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Controller.Library;
@@ -15,14 +14,12 @@ namespace Jellyfin.Plugin.ScriptRunner.Consumers;
 
 public class LibraryChangedConsumer : IHostedService
 {
-    private const string ConfigPath = "/config/plugins/ScriptRunner/config.json";
-
     private readonly ILibraryManager _libraryManager;
     private readonly ILogger<LibraryChangedConsumer> _logger;
 
-    private Timer? _debounceTimer;
+    // Um timer por script (chave = ScriptEntry.Id)
+    private readonly Dictionary<Guid, Timer> _timers = new();
     private readonly object _timerLock = new();
-    private bool _scriptQueued = false;
 
     public LibraryChangedConsumer(
         ILibraryManager libraryManager,
@@ -32,125 +29,152 @@ public class LibraryChangedConsumer : IHostedService
         _logger = logger;
     }
 
+    // ── Ciclo de vida ────────────────────────────────────────────────
+
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        var config = LoadConfig();
+        _libraryManager.ItemAdded   += OnItemAdded;
+        _libraryManager.ItemUpdated += OnItemUpdated;
 
-        if (config.TriggerOnItemAdded)
-            _libraryManager.ItemAdded += OnItemChanged;
-
-        if (config.TriggerOnItemUpdated)
-            _libraryManager.ItemUpdated += OnItemChanged;
-
-        _logger.LogInformation("[ScriptRunner] Plugin iniciado. Script: {Path}", config.ScriptPath);
+        _logger.LogInformation("[ScriptRunner] Plugin v2 iniciado. Scripts cadastrados: {Count}",
+            Plugin.Instance?.Configuration.Scripts.Count ?? 0);
 
         return Task.CompletedTask;
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
-        _libraryManager.ItemAdded -= OnItemChanged;
-        _libraryManager.ItemUpdated -= OnItemChanged;
-        _debounceTimer?.Dispose();
+        _libraryManager.ItemAdded   -= OnItemAdded;
+        _libraryManager.ItemUpdated -= OnItemUpdated;
+
+        // Descarta todos os timers pendentes
+        lock (_timerLock)
+        {
+            foreach (var timer in _timers.Values)
+                timer.Dispose();
+
+            _timers.Clear();
+        }
+
         return Task.CompletedTask;
     }
 
-    private void OnItemChanged(object? sender, ItemChangeEventArgs e)
+    // ── Handlers de evento ───────────────────────────────────────────
+
+    private void OnItemAdded(object? sender, ItemChangeEventArgs e)
+        => HandleEvent(e, triggerType: "Added");
+
+    private void OnItemUpdated(object? sender, ItemChangeEventArgs e)
+        => HandleEvent(e, triggerType: "Updated");
+
+    private void HandleEvent(ItemChangeEventArgs e, string triggerType)
     {
         if (e.Item is not (Movie or Series))
             return;
 
-        var config = LoadConfig();
-        if (string.IsNullOrWhiteSpace(config.ScriptPath))
-        {
-            _logger.LogWarning("[ScriptRunner] ScriptPath vazio no config.json.");
+        var config = Plugin.Instance?.Configuration;
+        if (config is null || config.Scripts.Count == 0)
             return;
-        }
 
-        _logger.LogDebug("[ScriptRunner] Item alterado: {Name}. Debounce: {Sec}s.", e.Item.Name, config.DebounceSeconds);
-
-        lock (_timerLock)
+        foreach (var script in config.Scripts)
         {
-            _scriptQueued = true;
-            _debounceTimer?.Dispose();
-            _debounceTimer = new Timer(
-                _ => ExecuteScript(),
-                null,
-                TimeSpan.FromSeconds(config.DebounceSeconds),
-                Timeout.InfiniteTimeSpan);
+            // Verifica se este script deve reagir ao tipo de evento
+            bool shouldRun = triggerType == "Added"   && script.TriggerOnItemAdded
+                          || triggerType == "Updated" && script.TriggerOnItemUpdated;
+
+            if (!shouldRun)
+                continue;
+
+            var filePath = Path.Combine(config.ScriptsDirectory, script.Name + ".sh");
+
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning("[ScriptRunner] Arquivo não encontrado: {Path}", filePath);
+                continue;
+            }
+
+            _logger.LogDebug(
+                "[ScriptRunner] [{Script}] Item {Type}: '{Item}'. Agendando em {Sec}s.",
+                script.Name, triggerType, e.Item.Name, script.DebounceSeconds);
+
+            ScheduleScript(script.Id, script.Name, filePath, script.DebounceSeconds);
         }
     }
 
-    private void ExecuteScript()
+    // ── Debounce por script ──────────────────────────────────────────
+
+    private void ScheduleScript(Guid scriptId, string scriptName, string filePath, int debounceSeconds)
     {
         lock (_timerLock)
         {
-            if (!_scriptQueued)
-                return;
+            // Cancela o timer anterior deste script (se houver)
+            if (_timers.TryGetValue(scriptId, out var existing))
+            {
+                existing.Dispose();
+                _timers.Remove(scriptId);
+            }
 
-            _scriptQueued = false;
+            // Cria novo timer — dispara uma única vez após o debounce
+            _timers[scriptId] = new Timer(
+                _ => ExecuteScript(scriptId, scriptName, filePath),
+                state: null,
+                dueTime: TimeSpan.FromSeconds(debounceSeconds),
+                period: Timeout.InfiniteTimeSpan);
+        }
+    }
+
+    // ── Execução do script ───────────────────────────────────────────
+
+    private void ExecuteScript(Guid scriptId, string scriptName, string filePath)
+    {
+        // Remove o timer da lista (já disparou)
+        lock (_timerLock)
+        {
+            if (_timers.TryGetValue(scriptId, out var t))
+            {
+                t.Dispose();
+                _timers.Remove(scriptId);
+            }
         }
 
-        var config = LoadConfig();
+        _logger.LogInformation("[ScriptRunner] [{Script}] Executando: {Path}", scriptName, filePath);
 
         try
         {
-            _logger.LogInformation("[ScriptRunner] Executando: {Path} {Args}", config.ScriptPath, config.ScriptArguments);
-
             var psi = new ProcessStartInfo
             {
-                FileName = "/bin/bash",
-                Arguments = $"-c \"{config.ScriptPath} {config.ScriptArguments}\"",
+                FileName               = "/bin/bash",
+                Arguments              = $"-c \"{filePath}\"",
                 RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
+                RedirectStandardError  = true,
+                UseShellExecute        = false,
+                CreateNoWindow         = true
             };
 
             using var process = Process.Start(psi);
-            if (process == null)
+
+            if (process is null)
             {
-                _logger.LogError("[ScriptRunner] Falha ao iniciar processo.");
+                _logger.LogError("[ScriptRunner] [{Script}] Falha ao iniciar processo.", scriptName);
                 return;
             }
 
             var output = process.StandardOutput.ReadToEnd();
-            var error = process.StandardError.ReadToEnd();
+            var error  = process.StandardError.ReadToEnd();
             process.WaitForExit();
 
             if (!string.IsNullOrWhiteSpace(output))
-                _logger.LogInformation("[ScriptRunner] Output: {Output}", output);
+                _logger.LogInformation("[ScriptRunner] [{Script}] stdout: {Output}", scriptName, output);
 
             if (process.ExitCode != 0)
-                _logger.LogError("[ScriptRunner] Erro (exit {Code}): {Error}", process.ExitCode, error);
+                _logger.LogError("[ScriptRunner] [{Script}] Saiu com código {Code}: {Error}",
+                    scriptName, process.ExitCode, error);
             else
-                _logger.LogInformation("[ScriptRunner] Script concluído com sucesso.");
+                _logger.LogInformation("[ScriptRunner] [{Script}] Concluído com sucesso.", scriptName);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "[ScriptRunner] Exceção ao executar o script.");
-        }
-    }
-
-    private PluginConfiguration LoadConfig()
-    {
-        try
-        {
-            if (!File.Exists(ConfigPath))
-            {
-                _logger.LogWarning("[ScriptRunner] config.json não encontrado em {Path}. Usando defaults.", ConfigPath);
-                return new PluginConfiguration();
-            }
-
-            var json = File.ReadAllText(ConfigPath);
-            var config = JsonSerializer.Deserialize<PluginConfiguration>(json);
-
-            return config ?? new PluginConfiguration();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "[ScriptRunner] Erro ao ler config.json. Usando defaults.");
-            return new PluginConfiguration();
+            _logger.LogError(ex, "[ScriptRunner] [{Script}] Exceção durante execução.", scriptName);
         }
     }
 }

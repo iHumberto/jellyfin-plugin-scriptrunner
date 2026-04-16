@@ -1,104 +1,69 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Script Runner</title>
-</head>
-<body>
-  <div id="ScriptRunnerConfigPage"
-       data-role="page"
-       class="page type-interior pluginConfigurationPage"
-       data-require="emby-input,emby-button,emby-checkbox">
+<div id="ScriptRunnerConfigPage" data-role="page" class="page type-interior pluginConfigurationPage"
+  data-require="emby-input,emby-button,emby-checkbox">
 
-    <div data-role="content">
-      <div class="content-primary">
-        <form id="ScriptRunnerConfigForm">
+  <div data-role="content">
+    <div class="content-primary">
 
-          <div class="sectionTitleContainer flex align-items-center">
-            <h2 class="sectionTitle">Script Runner</h2>
-          </div>
-
-          <div class="inputContainer">
-            <label class="inputLabel inputLabelUnfocused" for="scriptPath">Caminho do Script</label>
-            <input id="scriptPath" type="text" class="emby-input"
-                   placeholder="/jellyfin/id_updater.sh" />
-            <div class="fieldDescription">
-              Caminho absoluto do script dentro do container.
-            </div>
-          </div>
-
-          <div class="inputContainer">
-            <label class="inputLabel inputLabelUnfocused" for="scriptArguments">Argumentos (opcional)</label>
-            <input id="scriptArguments" type="text" class="emby-input" placeholder="--force" />
-          </div>
-
-          <div class="inputContainer">
-            <label class="inputLabel inputLabelUnfocused" for="debounceSeconds">Debounce (segundos)</label>
-            <input id="debounceSeconds" type="number" class="emby-input" min="5" max="600" />
-            <div class="fieldDescription">
-              Tempo de espera após o último evento antes de executar o script. Recomendado: 30.
-            </div>
-          </div>
-
-          <div class="checkboxContainer">
-            <label>
-              <input id="triggerOnItemAdded" type="checkbox" is="emby-checkbox" />
-              <span>Disparar quando um item for <strong>adicionado</strong></span>
-            </label>
-          </div>
-
-          <div class="checkboxContainer">
-            <label>
-              <input id="triggerOnItemUpdated" type="checkbox" is="emby-checkbox" />
-              <span>Disparar quando um item for <strong>atualizado</strong></span>
-            </label>
-          </div>
-
-          <div>
-            <button is="emby-button" type="submit" class="raised button-submit block emby-button">
-              <span>Salvar</span>
-            </button>
-          </div>
-
-        </form>
+      <div class="sectionTitleContainer flex align-items-center">
+        <h2 class="sectionTitle">Novo Script</h2>
       </div>
+
+      <form id="ScriptRunnerForm">
+
+        <div class="inputContainer">
+          <label class="inputLabel inputLabelUnfocused" for="scriptName">Nome do script</label>
+          <input id="scriptName" type="text" class="emby-input" placeholder="id_updater" />
+          <div class="fieldDescription">Será salvo como &lt;nome&gt;.sh no diretório de scripts.</div>
+        </div>
+
+        <div class="inputContainer">
+          <label class="inputLabel inputLabelUnfocused" for="scriptContent">Conteúdo do script</label>
+          <textarea id="scriptContent"
+            style="width:100%;min-height:200px;resize:vertical;font-family:monospace;background:transparent;color:inherit;border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:8px;font-size:13px"
+            placeholder="#!/bin/bash&#10;echo 'Olá, Jellyfin!'"></textarea>
+        </div>
+
+        <div class="inputContainer">
+          <label class="inputLabel inputLabelUnfocused" for="debounceSeconds">Debounce (segundos)</label>
+          <input id="debounceSeconds" type="number" class="emby-input" min="5" max="600" value="30" />
+          <div class="fieldDescription">Tempo de espera após o último evento antes de executar. Recomendado: 30s.</div>
+        </div>
+
+        <div class="checkboxContainer">
+          <label>
+            <input id="triggerOnItemAdded" type="checkbox" is="emby-checkbox" checked />
+            <span>Disparar ao <strong>adicionar</strong> novas mídias</span>
+          </label>
+        </div>
+
+        <div class="checkboxContainer">
+          <label>
+            <input id="triggerOnItemUpdated" type="checkbox" is="emby-checkbox" />
+            <span>Disparar ao <strong>atualizar</strong> mídias existentes</span>
+          </label>
+        </div>
+
+        <div style="margin-top:1.5em">
+          <button type="button"
+            style="color:#fff;background:#00a4dc;border:none;border-radius:4px;padding:0.6em 1.4em;font-size:1em;cursor:pointer;"
+            onclick="(function(){var name=document.getElementById('scriptName').value.trim();var content=document.getElementById('scriptContent').value;if(!name){Dashboard.alert('Informe o nome.');return;}if(!content.trim()){Dashboard.alert('Conteudo vazio.');return;}ApiClient.ajax({type:'POST',url:ApiClient.getUrl('ScriptRunner/scripts'),data:JSON.stringify({Name:name,Content:content,DebounceSeconds:parseInt(document.getElementById('debounceSeconds').value)||30,TriggerOnItemAdded:document.getElementById('triggerOnItemAdded').checked,TriggerOnItemUpdated:document.getElementById('triggerOnItemUpdated').checked}),contentType:'application/json',dataType:'json'}).then(function(){document.getElementById('scriptName').value='';document.getElementById('scriptContent').value='';document.getElementById('debounceSeconds').value='30';document.getElementById('triggerOnItemAdded').checked=true;document.getElementById('triggerOnItemUpdated').checked=false;ApiClient.ajax({type:'GET',url:ApiClient.getUrl('ScriptRunner/scripts'),dataType:'json'}).then(function(r){window._srRender(r||[]);});Dashboard.alert('Salvo!');}).catch(function(e){Dashboard.alert('Erro: '+e.status);});})()">
+            Salvar Script
+          </button>
+        </div>
+
+      </form>
+
+      <div style="margin-top:2.5em;border-top:1px solid rgba(255,255,255,0.15);padding-top:1.5em">
+        <div class="sectionTitleContainer">
+          <h2 class="sectionTitle">Scripts Ativos</h2>
+        </div>
+        <div id="scriptList" style="margin-top:1em">
+          <p id="emptyState" style="opacity:0.5">Nenhum script cadastrado ainda.</p>
+          <img src="x_sr_init" style="display:none"
+            onerror="window._srRender=function(sc){var l=document.getElementById('scriptList'),e=document.getElementById('emptyState');if(!l)return;Array.from(l.querySelectorAll('.script-item')).forEach(function(x){x.remove();});if(!sc||!sc.length){e.style.display='';return;}e.style.display='none';sc.forEach(function(s){var row=document.createElement('div');row.className='script-item';row.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:0.75em 1em;margin-bottom:0.5em;border-radius:4px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1)';var n=String(s.Name||'sem nome').replace(/&/g,'&amp;').replace(/</g,'&lt;');var t=[];if(s.TriggerOnItemAdded)t.push('adicionado');if(s.TriggerOnItemUpdated)t.push('atualizado');row.innerHTML='<div><strong>'+n+'.sh</strong><div style=\'font-size:0.8em;opacity:0.6;margin-top:0.2em\'>Debounce: '+(s.DebounceSeconds||30)+'s'+(t.length?' · Dispara ao: '+t.join(', '):'')+'</div></div>';var btn=document.createElement('button');btn.type='button';btn.textContent='✕';btn.style.cssText='background:transparent;border:none;cursor:pointer;color:#f44336;font-size:1.2em;padding:0.25em 0.5em';(function(id,nm){btn.onclick=function(){if(!confirm('Excluir '+nm+'.sh?'))return;ApiClient.ajax({type:'DELETE',url:ApiClient.getUrl('ScriptRunner/scripts/'+id)}).then(function(){ApiClient.ajax({type:'GET',url:ApiClient.getUrl('ScriptRunner/scripts'),dataType:'json'}).then(function(r){window._srRender(r||[]);});}).catch(function(er){Dashboard.alert('Erro: '+er.status);});};})(s.Id,s.Name||'sem nome');row.appendChild(btn);l.appendChild(row);});};ApiClient.ajax({type:'GET',url:ApiClient.getUrl('ScriptRunner/scripts'),dataType:'json'}).then(function(r){window._srRender(r||[]);}).catch(function(){window._srRender([]);});this.parentNode.removeChild(this);" />
+        </div>
+      </div>
+
     </div>
   </div>
-
-  <script type="text/javascript">
-    var pluginId = 'a1b2c3d4-e5f6-7890-abcd-ef1234567890';
-
-    function loadConfig(page) {
-      ApiClient.getPluginConfiguration(pluginId).then(function (config) {
-        page.querySelector('#scriptPath').value          = config.ScriptPath || '';
-        page.querySelector('#scriptArguments').value    = config.ScriptArguments || '';
-        page.querySelector('#debounceSeconds').value    = config.DebounceSeconds != null ? config.DebounceSeconds : 30;
-        page.querySelector('#triggerOnItemAdded').checked   = config.TriggerOnItemAdded !== false;
-        page.querySelector('#triggerOnItemUpdated').checked = config.TriggerOnItemUpdated === true;
-      });
-    }
-
-    function saveConfig(page) {
-      ApiClient.getPluginConfiguration(pluginId).then(function (config) {
-        config.ScriptPath           = page.querySelector('#scriptPath').value;
-        config.ScriptArguments      = page.querySelector('#scriptArguments').value;
-        config.DebounceSeconds      = parseInt(page.querySelector('#debounceSeconds').value, 10) || 30;
-        config.TriggerOnItemAdded   = page.querySelector('#triggerOnItemAdded').checked;
-        config.TriggerOnItemUpdated = page.querySelector('#triggerOnItemUpdated').checked;
-
-        ApiClient.updatePluginConfiguration(pluginId, config).then(function () {
-          Dashboard.processPluginConfigurationUpdateResult();
-        });
-      });
-    }
-
-    document.querySelector('#ScriptRunnerConfigPage').addEventListener('pageshow', function (e) {
-      loadConfig(e.target);
-    });
-
-    document.querySelector('#ScriptRunnerConfigForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      saveConfig(document.querySelector('#ScriptRunnerConfigPage'));
-    });
-  </script>
-</body>
-</html>
+</div>
