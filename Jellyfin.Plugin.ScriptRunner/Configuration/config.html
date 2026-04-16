@@ -26,8 +26,7 @@
         <div class="inputContainer">
           <label class="inputLabel inputLabelUnfocused" for="debounceSeconds">Debounce (segundos)</label>
           <input id="debounceSeconds" type="number" class="emby-input" min="5" max="600" value="30" />
-          <div class="fieldDescription">Tempo de espera após o último evento antes de executar. Recomendado: 30s.
-          </div>
+          <div class="fieldDescription">Tempo de espera após o último evento antes de executar. Recomendado: 30s.</div>
         </div>
 
         <div class="checkboxContainer">
@@ -44,17 +43,13 @@
           </label>
         </div>
 
-        <button type="button"
-          style="color:#fff;background:#00a4dc;border:none;border-radius:4px;padding:0.6em 1.4em;font-size:1em;cursor:pointer;"
-          onclick="(function(){
-          var name=document.getElementById('scriptName').value.trim();
-          var content=document.getElementById('scriptContent').value;
-          if(!name){Dashboard.alert('Informe o nome.');return;}
-          if(!content.trim()){Dashboard.alert('Conteúdo vazio.');return;}
-          ApiClient.ajax({type:'POST',url:ApiClient.getUrl('ScriptRunner/scripts'),data:JSON.stringify({Name:name,Content:content,DebounceSeconds:parseInt(document.getElementById('debounceSeconds').value)||30,TriggerOnItemAdded:document.getElementById('triggerOnItemAdded').checked,TriggerOnItemUpdated:document.getElementById('triggerOnItemUpdated').checked}),contentType:'application/json',dataType:'json'}).then(function(){document.getElementById('scriptName').value='';document.getElementById('scriptContent').value='';document.getElementById('debounceSeconds').value='30';document.getElementById('triggerOnItemAdded').checked=true;document.getElementById('triggerOnItemUpdated').checked=false;ApiClient.ajax({type:'GET',url:ApiClient.getUrl('ScriptRunner/scripts'),dataType:'json'}).then(function(r){window._srRender(r||[]);});Dashboard.alert('Salvo!');}).catch(function(e){Dashboard.alert('Erro: '+e.status);});
-        })()">
-          Salvar Script
-        </button>
+        <div style="margin-top:1.5em">
+          <button type="button"
+            style="color:#fff;background:#00a4dc;border:none;border-radius:4px;padding:0.6em 1.4em;font-size:1em;cursor:pointer;"
+            onclick="(function(){var name=document.getElementById('scriptName').value.trim();var content=document.getElementById('scriptContent').value;if(!name){Dashboard.alert('Informe o nome.');return;}if(!content.trim()){Dashboard.alert('Conteudo vazio.');return;}ApiClient.ajax({type:'POST',url:ApiClient.getUrl('ScriptRunner/scripts'),data:JSON.stringify({Name:name,Content:content,DebounceSeconds:parseInt(document.getElementById('debounceSeconds').value)||30,TriggerOnItemAdded:document.getElementById('triggerOnItemAdded').checked,TriggerOnItemUpdated:document.getElementById('triggerOnItemUpdated').checked}),contentType:'application/json',dataType:'json'}).then(function(){document.getElementById('scriptName').value='';document.getElementById('scriptContent').value='';document.getElementById('debounceSeconds').value='30';document.getElementById('triggerOnItemAdded').checked=true;document.getElementById('triggerOnItemUpdated').checked=false;ApiClient.ajax({type:'GET',url:ApiClient.getUrl('ScriptRunner/scripts'),dataType:'json'}).then(function(r){window._srRender(r||[]);});Dashboard.alert('Salvo!');}).catch(function(e){Dashboard.alert('Erro: '+e.status);});})()">
+            Salvar Script
+          </button>
+        </div>
 
       </form>
 
@@ -64,79 +59,11 @@
         </div>
         <div id="scriptList" style="margin-top:1em">
           <p id="emptyState" style="opacity:0.5">Nenhum script cadastrado ainda.</p>
+          <img src="x_sr_init" style="display:none"
+            onerror="window._srRender=function(sc){var l=document.getElementById('scriptList'),e=document.getElementById('emptyState');if(!l)return;Array.from(l.querySelectorAll('.script-item')).forEach(function(x){x.remove();});if(!sc||!sc.length){e.style.display='';return;}e.style.display='none';sc.forEach(function(s){var row=document.createElement('div');row.className='script-item';row.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:0.75em 1em;margin-bottom:0.5em;border-radius:4px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1)';var n=String(s.Name||'sem nome').replace(/&/g,'&amp;').replace(/</g,'&lt;');var t=[];if(s.TriggerOnItemAdded)t.push('adicionado');if(s.TriggerOnItemUpdated)t.push('atualizado');row.innerHTML='<div><strong>'+n+'.sh</strong><div style=\'font-size:0.8em;opacity:0.6;margin-top:0.2em\'>Debounce: '+(s.DebounceSeconds||30)+'s'+(t.length?' · Dispara ao: '+t.join(', '):'')+'</div></div>';var btn=document.createElement('button');btn.type='button';btn.textContent='✕';btn.style.cssText='background:transparent;border:none;cursor:pointer;color:#f44336;font-size:1.2em;padding:0.25em 0.5em';(function(id,nm){btn.onclick=function(){if(!confirm('Excluir '+nm+'.sh?'))return;ApiClient.ajax({type:'DELETE',url:ApiClient.getUrl('ScriptRunner/scripts/'+id)}).then(function(){ApiClient.ajax({type:'GET',url:ApiClient.getUrl('ScriptRunner/scripts'),dataType:'json'}).then(function(r){window._srRender(r||[]);});}).catch(function(er){Dashboard.alert('Erro: '+er.status);});};})(s.Id,s.Name||'sem nome');row.appendChild(btn);l.appendChild(row);});};ApiClient.ajax({type:'GET',url:ApiClient.getUrl('ScriptRunner/scripts'),dataType:'json'}).then(function(r){window._srRender(r||[]);}).catch(function(){window._srRender([]);});this.parentNode.removeChild(this);" />
         </div>
       </div>
 
     </div>
   </div>
 </div>
-
-<script>
-  (function () {
-
-    console.log("SR INLINE JS CARREGADO");
-
-    window._srRender = function (scripts) {
-      console.log("Render:", scripts);
-
-      var list = document.getElementById('scriptList');
-      var empty = document.getElementById('emptyState');
-
-      Array.from(list.querySelectorAll('.script-item')).forEach(function (el) {
-        el.remove();
-      });
-
-      if (!scripts || !scripts.length) {
-        empty.style.display = '';
-        return;
-      }
-
-      empty.style.display = 'none';
-
-      scripts.forEach(function (s) {
-        var row = document.createElement('div');
-        row.className = 'script-item';
-
-        row.innerHTML =
-          '<span>' + s.Name + '.sh</span>' +
-          '<button onclick="ApiClient.ajax({type:\'DELETE\',url:ApiClient.getUrl(\'ScriptRunner/scripts/' + s.Id + '\')}).then(function(){ window._srLoad(); })">Excluir</button>';
-
-        list.appendChild(row);
-      });
-    };
-
-    window._srLoad = function () {
-      console.log("GET scripts");
-
-      ApiClient.ajax({
-        type: 'GET',
-        url: ApiClient.getUrl('ScriptRunner/scripts'),
-        dataType: 'json'
-      })
-        .then(function (r) {
-          console.log("GET OK:", r);
-          window._srRender(r || []);
-        })
-        .catch(function (e) {
-          console.error("GET erro:", e);
-        });
-    };
-
-    var _srLoaded = false;
-    function _srInit() {
-      if (_srLoaded) return;
-      _srLoaded = true;
-      console.log("INIT LOAD");
-      window._srLoad();
-    }
-
-    var page = document.querySelector('#ScriptRunnerConfigPage');
-    if (page) {
-      page.addEventListener('pageshow', _srInit);
-    }
-
-    // Fallback: caso o pageshow já tenha disparado antes do script executar
-    setTimeout(_srInit, 500);
-
-  })();
-</script>
