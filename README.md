@@ -5,7 +5,7 @@
 
 # Jellyfin Script Runner Plugin
 
-Plugin for [Jellyfin](https://jellyfin.org) that automatically runs a custom script whenever an item is added e/or updated in the library.
+Plugin for [Jellyfin](https://jellyfin.org) that automatically runs a custom script whenever an item is added and/or updated in the library.
 
 Perfect for keeping slideshows, playlists, or any external file always in sync with your server's media.
 
