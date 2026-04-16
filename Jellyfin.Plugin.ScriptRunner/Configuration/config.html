@@ -52,13 +52,17 @@
             </label>
           </div>
 
-          <div style="margin-top:1.5em">
-            <button type="button"
-              style="color:#fff;background:#00a4dc;border:none;border-radius:4px;padding:0.6em 1.4em;font-size:1em;cursor:pointer;"
-              onclick="(function(){var name=document.getElementById('scriptName').value.trim();var content=document.getElementById('scriptContent').value;if(!name){Dashboard.alert('Informe o nome.');return;}if(!content.trim()){Dashboard.alert('Conteudo vazio.');return;}ApiClient.ajax({type:'POST',url:ApiClient.getUrl('ScriptRunner/scripts'),data:JSON.stringify({Name:name,Content:content,DebounceSeconds:parseInt(document.getElementById('debounceSeconds').value)||30,TriggerOnItemAdded:document.getElementById('triggerOnItemAdded').checked,TriggerOnItemUpdated:document.getElementById('triggerOnItemUpdated').checked}),contentType:'application/json',dataType:'json'}).then(function(){document.getElementById('scriptName').value='';document.getElementById('scriptContent').value='';document.getElementById('debounceSeconds').value='30';document.getElementById('triggerOnItemAdded').checked=true;document.getElementById('triggerOnItemUpdated').checked=false;ApiClient.ajax({type:'GET',url:ApiClient.getUrl('ScriptRunner/scripts'),dataType:'json'}).then(function(r){window._srRender(r||[]);});Dashboard.alert('Salvo!');}).catch(function(e){Dashboard.alert('Erro: '+e.status);});})()">
-              Salvar Script
-            </button>
-          </div>
+          <button type="button"
+            style="color:#fff;background:#00a4dc;border:none;border-radius:4px;padding:0.6em 1.4em;font-size:1em;cursor:pointer;"
+            onclick="(function(){
+          var name=document.getElementById('scriptName').value.trim();
+          var content=document.getElementById('scriptContent').value;
+          if(!name){Dashboard.alert('Informe o nome.');return;}
+          if(!content.trim()){Dashboard.alert('Conteúdo vazio.');return;}
+          ApiClient.ajax({type:'POST',url:ApiClient.getUrl('ScriptRunner/scripts'),data:JSON.stringify({Name:name,Content:content,DebounceSeconds:parseInt(document.getElementById('debounceSeconds').value)||30,TriggerOnItemAdded:document.getElementById('triggerOnItemAdded').checked,TriggerOnItemUpdated:document.getElementById('triggerOnItemUpdated').checked}),contentType:'application/json',dataType:'json'}).then(function(){document.getElementById('scriptName').value='';document.getElementById('scriptContent').value='';document.getElementById('debounceSeconds').value='30';document.getElementById('triggerOnItemAdded').checked=true;document.getElementById('triggerOnItemUpdated').checked=false;ApiClient.ajax({type:'GET',url:ApiClient.getUrl('ScriptRunner/scripts'),dataType:'json'}).then(function(r){window._srRender(r||[]);});Dashboard.alert('Salvo!');}).catch(function(e){Dashboard.alert('Erro: '+e.status);});
+        })()">
+            Salvar Script
+          </button>
 
         </form>
 
@@ -68,14 +72,48 @@
           </div>
           <div id="scriptList" style="margin-top:1em">
             <p id="emptyState" style="opacity:0.5">Nenhum script cadastrado ainda.</p>
-            <img src="x_sr_init" style="display:none"
-              onerror="window._srRender=function(scripts){var list=document.getElementById('scriptList');var empty=document.getElementById('emptyState');if(!list)return;Array.from(list.querySelectorAll('.script-item')).forEach(function(el){el.remove();});if(!scripts||!scripts.length){empty.style.display='';return;}empty.style.display='none';scripts.forEach(function(s){var id=s.Id,name=s.Name||'sem nome',debounce=s.DebounceSeconds||30;var triggers=[];if(s.TriggerOnItemAdded)triggers.push('adicionado');if(s.TriggerOnItemUpdated)triggers.push('atualizado');var row=document.createElement('div');row.className='script-item';row.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:0.75em 1em;margin-bottom:0.5em;border-radius:4px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1)';var eName=String(name).replace(/&/g,'&amp;').replace(/</g,'&lt;');var dName=String(name).replace(/\\/g,'\\\\').replace(/'/g,'\\'');row.innerHTML='<div><strong>'+eName+'.sh</strong><div style=\\'font-size:0.8em;opacity:0.6;margin-top:0.2em\\'>Debounce: '+debounce+'s'+(triggers.length?' &nbsp;&middot;&nbsp; Dispara ao: '+triggers.join(', '):' ')+'</div></div><button type=\\'button\\' style=\\'background:transparent;border:none;cursor:pointer;color:#f44336;font-size:1.2em;padding:0.25em 0.5em\\' onclick=\\'(function(){if(!confirm(&quot;Excluir '+dName+'.sh?&quot;))return;ApiClient.ajax({type:&quot;DELETE&quot;,url:ApiClient.getUrl(&quot;ScriptRunner/scripts/'+id+'&quot;)}).then(function(){ApiClient.ajax({type:&quot;GET&quot;,url:ApiClient.getUrl(&quot;ScriptRunner/scripts&quot;),dataType:&quot;json&quot;}).then(function(r){window._srRender(r||[]);});}).catch(function(e){Dashboard.alert(&quot;Erro: &quot;+e.status);});})()\\'>&#10005;</button>';list.appendChild(row);});};ApiClient.ajax({type:'GET',url:ApiClient.getUrl('ScriptRunner/scripts'),dataType:'json'}).then(function(r){window._srRender(r||[]);}).catch(function(){window._srRender([]);});this.parentNode.removeChild(this);" />
           </div>
         </div>
 
       </div>
     </div>
   </div>
+
+  <script type="text/javascript">
+  window._srRender = function(scripts) {
+    var list  = document.getElementById('scriptList');
+    var empty = document.getElementById('emptyState');
+    Array.from(list.querySelectorAll('.script-item')).forEach(function(el){ el.remove(); });
+    if (!scripts || !scripts.length) { empty.style.display = ''; return; }
+    empty.style.display = 'none';
+    scripts.forEach(function(s) {
+      var id = s.Id, name = s.Name||'(sem nome)', debounce = s.DebounceSeconds||30;
+      var triggers = [];
+      if (s.TriggerOnItemAdded)   triggers.push('adicionado');
+      if (s.TriggerOnItemUpdated) triggers.push('atualizado');
+      var row = document.createElement('div');
+      row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:0.75em 1em;margin-bottom:0.5em;border-radius:4px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1)';
+      var safeName = String(name).replace(/'/g,"\\'");
+      row.innerHTML =
+        '<div><strong>'+String(name).replace(/</g,'&lt;')+'.sh</strong>'+
+        '<div style="font-size:0.8em;opacity:0.6;margin-top:0.2em">Debounce: '+debounce+'s'+
+        (triggers.length?' &nbsp;·&nbsp; Dispara ao: '+triggers.join(', '):'')+
+        '</div></div>'+
+        '<button type="button" onclick="(function(){if(!confirm(\'Excluir '+safeName+'.sh?\')){return;}ApiClient.ajax({type:\'DELETE\',url:ApiClient.getUrl(\'ScriptRunner/scripts/'+id+'\')}).then(function(){ApiClient.ajax({type:\'GET\',url:ApiClient.getUrl(\'ScriptRunner/scripts\'),dataType:\'json\'}).then(function(r){window._srRender(r||[]);});}).catch(function(e){Dashboard.alert(\'Erro: \'+e.status);});})();" style="background:transparent;border:none;cursor:pointer;color:#f44336;font-size:1.2em;padding:0.25em 0.5em">✕</button>';
+      list.appendChild(row);
+    });
+  };
+
+  // Carrega lista inicial
+  setTimeout(function(){
+    if(typeof ApiClient !== 'undefined'){
+      ApiClient.ajax({type:'GET',url:ApiClient.getUrl('ScriptRunner/scripts'),dataType:'json'})
+        .then(function(r){ window._srRender(r||[]); })
+        .catch(function(){ window._srRender([]); });
+    }
+  }, 800);
+</script>
+
 </body>
 
 </html>
