@@ -4,6 +4,15 @@ on:
   push:
     tags:
       - 'v*'
+    branches:
+      - main
+    paths:
+      - 'Jellyfin.Plugin.ScriptRunner/**'
+      - 'Jellyfin.Plugin.ScriptRunner/*.csproj'
+      - 'Jellyfin.Plugin.ScriptRunner/*.cs'
+    pull_request:
+      branches:
+        - main
 
 jobs:
   build:
