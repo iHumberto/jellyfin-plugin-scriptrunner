@@ -8,12 +8,12 @@
     "overview": "Dispara scripts bash ao detectar novos itens na biblioteca do Jellyfin.",
     "versions": [
       {
-        "version": "2.0.1.0",
+        "version": "2.0.2",
         "changelog": "Veja o release no GitHub.",
         "targetAbi": "10.10.0.0",
-        "sourceUrl": "https://github.com/iHumberto/jellyfin-plugin-scriptrunner/releases/download/v2.0.1/scriptrunner_2.0.0.0.zip",
-        "checksum": "83acfe91d3d7f0050e71986816fbdd02",
-        "timestamp": "2026-04-17T05:43:16Z"
+        "sourceUrl": "https://github.com/iHumberto/jellyfin-plugin-scriptrunner/releases/download/v2.0.2/scriptrunner_2.0.0.0.zip",
+        "checksum": "c3ee9bb3ef72a70a2f7f4bf9d61714e5",
+        "timestamp": "2026-04-18T00:56:03Z"
       }
     ]
   }
