@@ -69,7 +69,7 @@ jobs:
         TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
         SOURCE_URL="https://github.com/${{ github.repository }}/releases/download/${GITHUB_REF_NAME}/$(basename $ZIP_FILE)"
 
-        jq --arg version "$VERSION.0" \
+        jq --arg version "$VERSION" \
            --arg checksum "$CHECKSUM" \
            --arg sourceUrl "$SOURCE_URL" \
            --arg timestamp "$TIMESTAMP" \
