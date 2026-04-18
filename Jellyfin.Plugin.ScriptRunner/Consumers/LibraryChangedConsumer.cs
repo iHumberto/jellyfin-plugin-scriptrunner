@@ -69,12 +69,15 @@ public class LibraryChangedConsumer : IHostedService
 
     private void HandleEvent(ItemChangeEventArgs e, string triggerType)
     {
-        if (e.Item is not (Movie or Series))
-            return;
+        _logger.LogDebug("[ScriptRunner] Evento recebido: {Trigger} para o item '{Item}' (Tipo: {Type})", 
+            triggerType, e.Item.Name, e.Item.GetType().Name);
 
         var config = Plugin.Instance?.Configuration;
         if (config is null || config.Scripts.Count == 0)
+        {
+            _logger.LogDebug("[ScriptRunner] Nenhuma configuração ou script encontrado.");
             return;
+        }
 
         foreach (var script in config.Scripts)
         {
@@ -89,12 +92,12 @@ public class LibraryChangedConsumer : IHostedService
 
             if (!File.Exists(filePath))
             {
-                _logger.LogWarning("[ScriptRunner] Arquivo não encontrado: {Path}", filePath);
+                _logger.LogWarning("[ScriptRunner] Arquivo não encontrado no disco: {Path}", filePath);
                 continue;
             }
 
-            _logger.LogDebug(
-                "[ScriptRunner] [{Script}] Item {Type}: '{Item}'. Agendando em {Sec}s.",
+            _logger.LogInformation(
+                "[ScriptRunner] [{Script}] Item {Type}: '{Item}'. Agendando execução em {Sec}s.",
                 script.Name, triggerType, e.Item.Name, script.DebounceSeconds);
 
             ScheduleScript(script.Id, script.Name, filePath, script.DebounceSeconds);
