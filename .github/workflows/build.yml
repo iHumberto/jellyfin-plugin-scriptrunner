@@ -24,19 +24,6 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
-    - name: Build com JPRM (gera o .zip no formato Jellyfin)
-      uses: oddstr13/jellyfin-plugin-repository-manager@v1.1.1
-      id: jprm
-      with:
-        dotnet-target: 'net8.0'
-        path: 'Jellyfin.Plugin.ScriptRunner'
-        version: ${{ startsWith(github.ref, 'refs/tags/v') && env.TAG_VERSION || '' }}
-      env:
-        TAG_VERSION: ${{ github.ref_name }}
-        # O JPRM falha se receber o 'v', então removemos aqui se necessário
-        # Mas vamos simplificar usando a lógica de substituição do próprio GHA se possível
-        # ou apenas passar github.ref_name removendo o primeiro caractere se for 'v'
-
     - name: Extrair Versão Limpa
       if: startsWith(github.ref, 'refs/tags/v')
       run: |
