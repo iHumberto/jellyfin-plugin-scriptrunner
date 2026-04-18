@@ -98,8 +98,7 @@ jobs:
           artifact/*.md5
           artifact/*.sha256
         body: |
-          ![Project Stage][project-stage-shield]
-          ![Maintenance][maintenance-shield]
+          ![Project Stage][project-stage-shield] ![Maintenance][maintenance-shield]
           
           ---
           
