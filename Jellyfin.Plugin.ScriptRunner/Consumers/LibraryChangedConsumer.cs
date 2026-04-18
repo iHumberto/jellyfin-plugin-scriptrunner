@@ -110,19 +110,20 @@ public class LibraryChangedConsumer : IHostedService
     {
         lock (_timerLock)
         {
-            // Cancela o timer anterior deste script (se houver)
-            if (_timers.TryGetValue(scriptId, out var existing))
+            if (_timers.TryGetValue(scriptId, out var timer))
             {
-                existing.Dispose();
-                _timers.Remove(scriptId);
+                // Reinicia o timer existente (debounce real)
+                timer.Change(TimeSpan.FromSeconds(debounceSeconds), Timeout.InfiniteTimeSpan);
             }
-
-            // Cria novo timer — dispara uma única vez após o debounce
-            _timers[scriptId] = new Timer(
-                _ => ExecuteScript(scriptId, scriptName, filePath),
-                state: null,
-                dueTime: TimeSpan.FromSeconds(debounceSeconds),
-                period: Timeout.InfiniteTimeSpan);
+            else
+            {
+                // Cria novo timer se não existir
+                _timers[scriptId] = new Timer(
+                    _ => ExecuteScript(scriptId, scriptName, filePath),
+                    null,
+                    TimeSpan.FromSeconds(debounceSeconds),
+                    Timeout.InfiniteTimeSpan);
+            }
         }
     }
 
@@ -130,12 +131,12 @@ public class LibraryChangedConsumer : IHostedService
 
     private void ExecuteScript(Guid scriptId, string scriptName, string filePath)
     {
-        // Remove o timer da lista (já disparou)
+        // Remove o timer da lista antes de começar para permitir novos agendamentos
         lock (_timerLock)
         {
-            if (_timers.TryGetValue(scriptId, out var t))
+            if (_timers.TryGetValue(scriptId, out var timer))
             {
-                t.Dispose();
+                timer.Dispose();
                 _timers.Remove(scriptId);
             }
         }
