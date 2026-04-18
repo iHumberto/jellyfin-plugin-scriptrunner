@@ -44,10 +44,8 @@
         </div>
 
         <div style="margin-top:1.5em">
-          <button type="button"
-            style="color:#fff;background:#00a4dc;border:none;border-radius:4px;padding:0.6em 1.4em;font-size:1em;cursor:pointer;"
-            onclick="(function(){var name=document.getElementById('scriptName').value.trim();var content=document.getElementById('scriptContent').value;if(!name){Dashboard.alert('Informe o nome.');return;}if(!content.trim()){Dashboard.alert('Conteudo vazio.');return;}ApiClient.ajax({type:'POST',url:ApiClient.getUrl('ScriptRunner/scripts'),data:JSON.stringify({Name:name,Content:content,DebounceSeconds:parseInt(document.getElementById('debounceSeconds').value)||30,TriggerOnItemAdded:document.getElementById('triggerOnItemAdded').checked,TriggerOnItemUpdated:document.getElementById('triggerOnItemUpdated').checked}),contentType:'application/json',dataType:'json'}).then(function(){document.getElementById('scriptName').value='';document.getElementById('scriptContent').value='';document.getElementById('debounceSeconds').value='30';document.getElementById('triggerOnItemAdded').checked=true;document.getElementById('triggerOnItemUpdated').checked=false;ApiClient.ajax({type:'GET',url:ApiClient.getUrl('ScriptRunner/scripts'),dataType:'json'}).then(function(r){window._srRender(r||[]);});Dashboard.alert('Salvo!');}).catch(function(e){Dashboard.alert('Erro: '+e.status);});})()">
-            Salvar Script
+          <button id="btnSaveScript" type="button" is="emby-button" class="raised button-confirm block emby-button">
+            <span>Salvar Script</span>
           </button>
         </div>
 
@@ -59,11 +57,124 @@
         </div>
         <div id="scriptList" style="margin-top:1em">
           <p id="emptyState" style="opacity:0.5">Nenhum script cadastrado ainda.</p>
-          <img src="x_sr_init" style="display:none"
-            onerror="window._srRender=function(sc){var l=document.getElementById('scriptList'),e=document.getElementById('emptyState');if(!l)return;Array.from(l.querySelectorAll('.script-item')).forEach(function(x){x.remove();});if(!sc||!sc.length){e.style.display='';return;}e.style.display='none';sc.forEach(function(s){var row=document.createElement('div');row.className='script-item';row.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:0.75em 1em;margin-bottom:0.5em;border-radius:4px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1)';var n=String(s.Name||'sem nome').replace(/&/g,'&amp;').replace(/</g,'&lt;');var t=[];if(s.TriggerOnItemAdded)t.push('adicionado');if(s.TriggerOnItemUpdated)t.push('atualizado');row.innerHTML='<div><strong>'+n+'.sh</strong><div style=\'font-size:0.8em;opacity:0.6;margin-top:0.2em\'>Debounce: '+(s.DebounceSeconds||30)+'s'+(t.length?' · Dispara ao: '+t.join(', '):'')+'</div></div>';var btn=document.createElement('button');btn.type='button';btn.textContent='✕';btn.style.cssText='background:transparent;border:none;cursor:pointer;color:#f44336;font-size:1.2em;padding:0.25em 0.5em';(function(id,nm){btn.onclick=function(){if(!confirm('Excluir '+nm+'.sh?'))return;ApiClient.ajax({type:'DELETE',url:ApiClient.getUrl('ScriptRunner/scripts/'+id)}).then(function(){ApiClient.ajax({type:'GET',url:ApiClient.getUrl('ScriptRunner/scripts'),dataType:'json'}).then(function(r){window._srRender(r||[]);});}).catch(function(er){Dashboard.alert('Erro: '+er.status);});};})(s.Id,s.Name||'sem nome');row.appendChild(btn);l.appendChild(row);});};ApiClient.ajax({type:'GET',url:ApiClient.getUrl('ScriptRunner/scripts'),dataType:'json'}).then(function(r){window._srRender(r||[]);}).catch(function(){window._srRender([]);});this.parentNode.removeChild(this);" />
         </div>
       </div>
 
     </div>
   </div>
+
+  <script type="text/javascript">
+    var ScriptRunnerConfig = {
+      renderScripts: function (scripts) {
+        var list = document.getElementById('scriptList');
+        var emptyState = document.getElementById('emptyState');
+        if (!list) return;
+
+        // Limpa lista atual
+        Array.from(list.querySelectorAll('.script-item')).forEach(function (x) {
+          x.remove();
+        });
+
+        if (!scripts || !scripts.length) {
+          emptyState.style.display = '';
+          return;
+        }
+
+        emptyState.style.display = 'none';
+
+        scripts.forEach(function (s) {
+          var row = document.createElement('div');
+          row.className = 'script-item';
+          row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:0.75em 1em;margin-bottom:0.5em;border-radius:4px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1)';
+
+          var name = String(s.Name || 'sem nome').replace(/&/g, '&amp;').replace(/</g, '&lt;');
+          var triggers = [];
+          if (s.TriggerOnItemAdded) triggers.push('adicionado');
+          if (s.TriggerOnItemUpdated) triggers.push('atualizado');
+
+          row.innerHTML = '<div><strong>' + name + '.sh</strong>' +
+            '<div style="font-size:0.8em;opacity:0.6;margin-top:0.2em">Debounce: ' + (s.DebounceSeconds || 30) + 's' +
+            (triggers.length ? ' · Dispara ao: ' + triggers.join(', ') : '') + '</div></div>';
+
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.innerHTML = '<span class="material-icons delete">delete</span>';
+          btn.style.cssText = 'background:transparent;border:none;cursor:pointer;color:#f44336;font-size:1.2em;padding:0.25em 0.5em';
+
+          btn.onclick = function () {
+            if (!confirm('Excluir ' + name + '.sh?')) return;
+            ApiClient.ajax({
+              type: 'DELETE',
+              url: ApiClient.getUrl('ScriptRunner/scripts/' + s.Id)
+            }).then(function () {
+              ScriptRunnerConfig.loadScripts();
+            });
+          };
+
+          row.appendChild(btn);
+          list.appendChild(row);
+        });
+      },
+
+      loadScripts: function () {
+        ApiClient.ajax({
+          type: 'GET',
+          url: ApiClient.getUrl('ScriptRunner/scripts'),
+          dataType: 'json'
+        }).then(function (r) {
+          ScriptRunnerConfig.renderScripts(r || []);
+        }).catch(function () {
+          ScriptRunnerConfig.renderScripts([]);
+        });
+      },
+
+      saveScript: function () {
+        var name = document.getElementById('scriptName').value.trim();
+        var content = document.getElementById('scriptContent').value;
+
+        if (!name) {
+          alert('Informe o nome.');
+          return;
+        }
+        if (!content.trim()) {
+          alert('Conteudo vazio.');
+          return;
+        }
+
+        var data = {
+          Name: name,
+          Content: content,
+          DebounceSeconds: parseInt(document.getElementById('debounceSeconds').value) || 30,
+          TriggerOnItemAdded: document.getElementById('triggerOnItemAdded').checked,
+          TriggerOnItemUpdated: document.getElementById('triggerOnItemUpdated').checked
+        };
+
+        ApiClient.ajax({
+          type: 'POST',
+          url: ApiClient.getUrl('ScriptRunner/scripts'),
+          data: JSON.stringify(data),
+          contentType: 'application/json',
+          dataType: 'json'
+        }).then(function () {
+          document.getElementById('scriptName').value = '';
+          document.getElementById('scriptContent').value = '';
+          document.getElementById('debounceSeconds').value = '30';
+          document.getElementById('triggerOnItemAdded').checked = true;
+          document.getElementById('triggerOnItemUpdated').checked = false;
+          ScriptRunnerConfig.loadScripts();
+          alert('Salvo!');
+        }).catch(function (e) {
+          alert('Erro: ' + e.status);
+        });
+      }
+    };
+
+    document.getElementById('ScriptRunnerConfigPage').addEventListener('pageshow', function () {
+      ScriptRunnerConfig.loadScripts();
+    });
+
+    document.getElementById('btnSaveScript').addEventListener('click', function () {
+      ScriptRunnerConfig.saveScript();
+    });
+  </script>
 </div>

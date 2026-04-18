@@ -29,7 +29,7 @@ public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
         {
             new PluginPageInfo
             {
-                Name = "config",
+                Name = "ScriptRunner",
                 EmbeddedResourcePath = $"{GetType().Namespace}.Configuration.config.html"
             }
         };
