@@ -30,6 +30,8 @@ jobs:
       with:
         dotnet-target: 'net8.0'
         path: 'Jellyfin.Plugin.ScriptRunner'
+        version: ${{ github.ref_type == 'tag' && format('{0}', github.ref_name) || '' }}
+        version-strip-v: true
 
     - name: Upload artifact do build
       uses: actions/upload-artifact@v4
