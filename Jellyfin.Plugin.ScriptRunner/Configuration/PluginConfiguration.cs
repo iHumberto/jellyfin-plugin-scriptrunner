@@ -7,7 +7,7 @@ namespace Jellyfin.Plugin.ScriptRunner.Configuration;
 
 public class PluginConfiguration : BasePluginConfiguration
 {
-    public string ScriptsDirectory { get; set; } = "/config/plugins/ScriptRunner/scripts";
+    public string ScriptsDirectory { get; set; } = "/config/plugins/scripts";
 
     [XmlArray("Scripts")]
     [XmlArrayItem("ScriptEntry")]

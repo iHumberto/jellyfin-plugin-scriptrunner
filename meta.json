@@ -5,7 +5,7 @@
   "description": "Executa scripts customizados quando a biblioteca é atualizada.",
   "overview": "Dispara scripts bash ao detectar novos itens na biblioteca do Jellyfin.",
   "owner": "iHumberto",
-  "version": "2.0.3",
+  "version": "2.0.8",
   "targetAbi": "10.10.0.0",
   "framework": "net8.0",
   "imageUrl": ""
