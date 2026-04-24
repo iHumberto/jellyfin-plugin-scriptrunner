@@ -9,11 +9,11 @@
     "versions": [
       {
         "version": "2.0.8",
-        "changelog": "Correção de persistência e diretório de scripts.",
+        "changelog": "Veja o release no GitHub.",
         "targetAbi": "10.10.0.0",
         "sourceUrl": "https://github.com/iHumberto/jellyfin-plugin-scriptrunner/releases/download/v2.0.8/scriptrunner_2.0.8.0.zip",
-        "checksum": "29ca6349b79afb04c35be07648390153",
-        "timestamp": "2026-04-23T00:00:00Z"
+        "checksum": "0170f6a6c7cacc0a0784d00edc6cc030",
+        "timestamp": "2026-04-24T00:32:06Z"
       }
     ]
   }
