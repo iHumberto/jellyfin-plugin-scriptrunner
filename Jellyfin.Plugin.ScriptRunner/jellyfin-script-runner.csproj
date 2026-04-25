@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
-    <Version>3.0.2</Version>
+    <Version>3.0.3</Version>
     <Product>Script Runner</Product>
     <Description>Executa scripts do usuário ao adicionar ou atualizar mídias na biblioteca</Description>
     <Company>iHumberto</Company>
