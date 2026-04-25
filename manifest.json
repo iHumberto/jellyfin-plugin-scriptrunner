@@ -9,19 +9,11 @@
     "versions": [
       {
         "version": "3.0.0",
-        "changelog": "v3.0.0: Adicionada funcionalidade de edição de scripts, renomeação de arquivos e ícones de ação.",
-        "targetAbi": "10.10.0.0",
-        "sourceUrl": "https://github.com/iHumberto/jellyfin-plugin-scriptrunner/releases/download/v3.0.0/scriptrunner_3.0.0.0.zip",
-        "checksum": "",
-        "timestamp": "2026-04-24T12:00:00Z"
-      },
-      {
-        "version": "2.0.8",
         "changelog": "Veja o release no GitHub.",
         "targetAbi": "10.10.0.0",
-        "sourceUrl": "https://github.com/iHumberto/jellyfin-plugin-scriptrunner/releases/download/v2.0.8/scriptrunner_2.0.8.0.zip",
-        "checksum": "0170f6a6c7cacc0a0784d00edc6cc030",
-        "timestamp": "2026-04-24T00:32:06Z"
+        "sourceUrl": "https://github.com/iHumberto/jellyfin-plugin-scriptrunner/releases/download/v3.0.0/scriptrunner_3.0.0.0.zip",
+        "checksum": "9529081b5ab5ac7104f0c3e59c3c49b1",
+        "timestamp": "2026-04-25T01:26:10Z"
       }
     ]
   }
