@@ -5,7 +5,7 @@
     <div class="content-primary">
 
       <div class="sectionTitleContainer flex align-items-center">
-        <h2 id="formTitle" class="sectionTitle">Novo Script</h2>
+        <h2 id="formTitle" class="sectionTitle">Novo Script (v3)</h2>
       </div>
 
       <form id="ScriptRunnerForm">
@@ -106,8 +106,8 @@
           // Botão Editar
           var btnEdit = document.createElement('button');
           btnEdit.type = 'button';
-          btnEdit.innerHTML = '<span class="material-icons build">build</span>';
-          btnEdit.style.cssText = 'background:transparent;border:none;cursor:pointer;color:#00a4dc;font-size:1.2em;padding:0.25em 0.5em';
+          btnEdit.innerHTML = '<i class="material-icons">mode_edit</i>';
+          btnEdit.style.cssText = 'background:transparent;border:none;cursor:pointer;color:#00a4dc;font-size:1.5em;padding:0.25em 0.5em';
           btnEdit.title = 'Editar';
           btnEdit.onclick = function () {
             ScriptRunnerConfig.editScript(s);
@@ -116,8 +116,8 @@
           // Botão Excluir
           var btnDel = document.createElement('button');
           btnDel.type = 'button';
-          btnDel.innerHTML = '<span class="material-icons delete">delete</span>';
-          btnDel.style.cssText = 'background:transparent;border:none;cursor:pointer;color:#f44336;font-size:1.2em;padding:0.25em 0.5em';
+          btnDel.innerHTML = '<i class="material-icons">delete</i>';
+          btnDel.style.cssText = 'background:transparent;border:none;cursor:pointer;color:#f44336;font-size:1.5em;padding:0.25em 0.5em';
           btnDel.title = 'Excluir';
           btnDel.onclick = function () {
             if (!confirm('Excluir ' + name + '.sh?')) return;
@@ -157,7 +157,7 @@
         document.getElementById('triggerOnItemAdded').checked = true;
         document.getElementById('triggerOnItemUpdated').checked = false;
 
-        document.getElementById('formTitle').innerText = 'Novo Script';
+        document.getElementById('formTitle').innerText = 'Novo Script (v3)';
         document.getElementById('btnCancelEdit').style.display = 'none';
       },
 

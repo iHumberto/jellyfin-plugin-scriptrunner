@@ -1,7 +1,7 @@
 ---
 name: "ScriptRunner"
 guid: "b7c9e1d2-1234-4abc-9def-123456789abd"
-version: "3.0.0.0"
+version: "3.0.1.0"
 targetAbi: "10.10.0.0"
 framework: "net8.0"
 overview: "Dispara scripts bash ao detectar novos itens na biblioteca do Jellyfin."
