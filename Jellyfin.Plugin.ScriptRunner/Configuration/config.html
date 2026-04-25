@@ -5,10 +5,11 @@
     <div class="content-primary">
 
       <div class="sectionTitleContainer flex align-items-center">
-        <h2 class="sectionTitle">Novo Script</h2>
+        <h2 id="formTitle" class="sectionTitle">Novo Script</h2>
       </div>
 
       <form id="ScriptRunnerForm">
+        <input type="hidden" id="scriptId" value="" />
 
         <div class="inputContainer">
           <label class="inputLabel inputLabelUnfocused" for="scriptName">Nome do script</label>
@@ -43,9 +44,12 @@
           </label>
         </div>
 
-        <div style="margin-top:1.5em">
+        <div style="margin-top:1.5em; display: flex; gap: 1em;">
           <button id="btnSaveScript" type="button" is="emby-button" class="raised button-confirm block emby-button">
             <span>Salvar Script</span>
+          </button>
+          <button id="btnCancelEdit" type="button" is="emby-button" class="raised block emby-button" style="display:none">
+            <span>Cancelar</span>
           </button>
         </div>
 
@@ -96,12 +100,26 @@
             '<div style="font-size:0.8em;opacity:0.6;margin-top:0.2em">Debounce: ' + (s.DebounceSeconds || 30) + 's' +
             (triggers.length ? ' · Dispara ao: ' + triggers.join(', ') : '') + '</div></div>';
 
-          var btn = document.createElement('button');
-          btn.type = 'button';
-          btn.innerHTML = '<span class="material-icons delete">delete</span>';
-          btn.style.cssText = 'background:transparent;border:none;cursor:pointer;color:#f44336;font-size:1.2em;padding:0.25em 0.5em';
+          var actions = document.createElement('div');
+          actions.style.cssText = 'display:flex;gap:0.5em';
 
-          btn.onclick = function () {
+          // Botão Editar
+          var btnEdit = document.createElement('button');
+          btnEdit.type = 'button';
+          btnEdit.innerHTML = '<span class="material-icons build">build</span>';
+          btnEdit.style.cssText = 'background:transparent;border:none;cursor:pointer;color:#00a4dc;font-size:1.2em;padding:0.25em 0.5em';
+          btnEdit.title = 'Editar';
+          btnEdit.onclick = function () {
+            ScriptRunnerConfig.editScript(s);
+          };
+
+          // Botão Excluir
+          var btnDel = document.createElement('button');
+          btnDel.type = 'button';
+          btnDel.innerHTML = '<span class="material-icons delete">delete</span>';
+          btnDel.style.cssText = 'background:transparent;border:none;cursor:pointer;color:#f44336;font-size:1.2em;padding:0.25em 0.5em';
+          btnDel.title = 'Excluir';
+          btnDel.onclick = function () {
             if (!confirm('Excluir ' + name + '.sh?')) return;
             ApiClient.ajax({
               type: 'DELETE',
@@ -111,9 +129,36 @@
             });
           };
 
-          row.appendChild(btn);
+          actions.appendChild(btnEdit);
+          actions.appendChild(btnDel);
+          row.appendChild(actions);
           list.appendChild(row);
         });
+      },
+
+      editScript: function (s) {
+        document.getElementById('scriptId').value = s.Id;
+        document.getElementById('scriptName').value = s.Name;
+        document.getElementById('scriptContent').value = s.Content;
+        document.getElementById('debounceSeconds').value = s.DebounceSeconds || 30;
+        document.getElementById('triggerOnItemAdded').checked = s.TriggerOnItemAdded;
+        document.getElementById('triggerOnItemUpdated').checked = s.TriggerOnItemUpdated;
+
+        document.getElementById('formTitle').innerText = 'Editar Script';
+        document.getElementById('btnCancelEdit').style.display = '';
+        window.scrollTo(0, 0);
+      },
+
+      cancelEdit: function () {
+        document.getElementById('scriptId').value = '';
+        document.getElementById('scriptName').value = '';
+        document.getElementById('scriptContent').value = '';
+        document.getElementById('debounceSeconds').value = '30';
+        document.getElementById('triggerOnItemAdded').checked = true;
+        document.getElementById('triggerOnItemUpdated').checked = false;
+
+        document.getElementById('formTitle').innerText = 'Novo Script';
+        document.getElementById('btnCancelEdit').style.display = 'none';
       },
 
       loadScripts: function () {
@@ -129,6 +174,7 @@
       },
 
       saveScript: function () {
+        var id = document.getElementById('scriptId').value;
         var name = document.getElementById('scriptName').value.trim();
         var content = document.getElementById('scriptContent').value;
 
@@ -142,6 +188,7 @@
         }
 
         var data = {
+          Id: id || '00000000-0000-0000-0000-000000000000',
           Name: name,
           Content: content,
           DebounceSeconds: parseInt(document.getElementById('debounceSeconds').value) || 30,
@@ -156,11 +203,7 @@
           contentType: 'application/json',
           dataType: 'json'
         }).then(function () {
-          document.getElementById('scriptName').value = '';
-          document.getElementById('scriptContent').value = '';
-          document.getElementById('debounceSeconds').value = '30';
-          document.getElementById('triggerOnItemAdded').checked = true;
-          document.getElementById('triggerOnItemUpdated').checked = false;
+          ScriptRunnerConfig.cancelEdit();
           ScriptRunnerConfig.loadScripts();
           alert('Salvo!');
         }).catch(function (e) {
@@ -175,6 +218,10 @@
 
     document.getElementById('btnSaveScript').addEventListener('click', function () {
       ScriptRunnerConfig.saveScript();
+    });
+
+    document.getElementById('btnCancelEdit').addEventListener('click', function () {
+      ScriptRunnerConfig.cancelEdit();
     });
   </script>
 </div>

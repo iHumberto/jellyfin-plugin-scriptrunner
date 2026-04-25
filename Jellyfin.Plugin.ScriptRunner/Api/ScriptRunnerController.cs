@@ -122,6 +122,17 @@ public class ScriptRunnerController : ControllerBase
 
         if (existing is not null)
         {
+            // Se o nome mudou, removemos o arquivo antigo para evitar duplicados na re-importação
+            if (existing.Name != safeName)
+            {
+                var oldFilePath = Path.Combine(dir, existing.Name + ".sh");
+                if (System.IO.File.Exists(oldFilePath))
+                {
+                    try { System.IO.File.Delete(oldFilePath); }
+                    catch (Exception ex) { _logger.LogWarning(ex, "[ScriptRunner] Erro ao deletar arquivo antigo durante renomeio: {Path}", oldFilePath); }
+                }
+            }
+
             existing.Name = safeName;
             existing.Content = entry.Content;
             existing.DebounceSeconds = entry.DebounceSeconds;
