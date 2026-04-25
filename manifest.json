@@ -9,11 +9,11 @@
     "versions": [
       {
         "version": "3.0.3",
-        "changelog": "Adicionado a edição de scripts e corrigindo ícones da interface",
+        "changelog": "Veja o release no GitHub.",
         "targetAbi": "10.10.0.0",
-        "sourceUrl": "https://github.com/iHumberto/jellyfin-plugin-scriptrunner/releases/download/v3.0.2/scriptrunner_3.0.2.0.zip",
-        "checksum": "194718f8b74c515c21031105e3426bdc",
-        "timestamp": "2026-04-25T02:27:26Z"
+        "sourceUrl": "https://github.com/iHumberto/jellyfin-plugin-scriptrunner/releases/download/v3.0.3/scriptrunner_3.0.3.0.zip",
+        "checksum": "7fde4e7d967a332de871e952222ce754",
+        "timestamp": "2026-04-25T02:45:19Z"
       }
     ]
   }
