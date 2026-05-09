@@ -7,7 +7,7 @@
 
 Plugin para o [Jellyfin](https://jellyfin.org) que executa um script customizado automaticamente sempre que um item for adicionado e/ou atualizado na biblioteca.
 
-Ideal para manter slideshows, listas ou qualquer arquivo externo sempre sincronizado com as mídias do servidor.
+Pensado para o uso em conjunto com o tema <a href="https://github.com/prism2001/finity" target="_blank">Finity</a>/<a href="https://forgejo.humbertof.dev/Humberto/infinity" target="_blank">Infinity</a>, mantendo o slideshow atualizado com as mídias mais recentes do Media Server 
 
 ---
 
