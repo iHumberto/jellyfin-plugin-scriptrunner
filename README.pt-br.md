@@ -7,7 +7,7 @@
 
 Plugin para o [Jellyfin](https://jellyfin.org) que executa um script customizado automaticamente sempre que um item for adicionado e/ou atualizado na biblioteca.
 
-Pensado para o uso em conjunto com o tema <a href="https://github.com/prism2001/finity" target="_blank">Finity</a>/<a href="https://forgejo.humbertof.dev/Humberto/infinity" target="_blank">Infinity</a>, mantendo o slideshow atualizado com as mídias mais recentes do Media Server 
+Pensado para o uso em conjunto com o tema [Finity](https://github.com/prism2001/finity)/[Infinity](https://forgejo.humbertof.dev/Humberto/infinity), mantendo o slideshow atualizado com as mídias mais recentes do Media Server 
 
 ---
 
