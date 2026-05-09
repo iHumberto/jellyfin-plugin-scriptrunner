@@ -24,10 +24,10 @@ Ideal para manter slideshows, listas ou qualquer arquivo externo sempre sincroni
 ## Configuração
 
 Acesse **Dashboard → Plugins → ScriptRunner** e adicione uma nova entrada de script.
-
+<div align="center">
 <img width="75%"  alt="{7203524E-FB4A-4657-92ED-83EF7AEC100E}" src="https://github.com/user-attachments/assets/ac30a19c-a327-4e1f-a26b-fa7ea1c49a96" />
 <img width="75%"  alt="{87EF8388-80F8-4A4B-BE77-0CF3D38A29CC}" src="https://github.com/user-attachments/assets/dd3a92bb-5d19-40f2-919e-5dab94a5a9b4" />
-
+</div>
 
 | Campo | Descrição |
 |-------|-----------|
