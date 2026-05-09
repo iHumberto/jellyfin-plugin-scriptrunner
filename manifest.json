@@ -12,8 +12,8 @@
         "changelog": "Veja o release no GitHub.",
         "targetAbi": "10.10.0.0",
         "sourceUrl": "https://github.com/iHumberto/jellyfin-plugin-scriptrunner/releases/download/v3.0.3/scriptrunner_3.0.3.0.zip",
-        "checksum": "7fde4e7d967a332de871e952222ce754",
-        "timestamp": "2026-04-25T02:45:19Z"
+        "checksum": "a31ba2a4656aa2556faccfea3358195d",
+        "timestamp": "2026-05-09T02:08:10Z"
       }
     ]
   }
