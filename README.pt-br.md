@@ -31,11 +31,11 @@ Acesse **Dashboard → Plugins → ScriptRunner** e adicione uma nova entrada de
 
 | Campo | Descrição |
 |-------|-----------|
-| **Name** | Um nome para identificar o script |
-| **Content** | O conteúdo do script a ser executado |
+| **Nome** | Um nome para identificar o script |
+| **Conteúdo** | O conteúdo do script a ser executado |
 | **Debounce (segundos)** | Tempo de espera após o último evento antes de executar (evita múltiplos disparos durante scans grandes) |
-| **Trigger on item added** | Executa o script quando um novo item é adicionado à biblioteca |
-| **Trigger on item updated** | Executa o script quando um item existente é atualizado |
+| **Disparar ao adicionar itens** | Executa o script quando um novo item é adicionado à biblioteca |
+| **Disparar ao atualizar itens** | Executa o script quando um item existente é atualizado |
 
 ---
 
